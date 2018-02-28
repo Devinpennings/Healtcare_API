@@ -1,0 +1,11 @@
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <servlet>
+        <servlet-name>healthcare</servlet-name>
+        <servlet-class>com.pharmacy.healthcare.ServletInitializer</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>healthcare</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+</web-app>
