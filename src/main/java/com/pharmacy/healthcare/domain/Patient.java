@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "patients")
+@DiscriminatorValue("patient")
 public class Patient extends User {
 
     @Column(name = "age", nullable = false)
@@ -16,4 +16,11 @@ public class Patient extends User {
     )
     private List<Diagnosis> diagnoses;
 
+    public Long getAge() {
+        return age;
+    }
+
+    public List<Diagnosis> getDiagnoses() {
+        return diagnoses;
+    }
 }
