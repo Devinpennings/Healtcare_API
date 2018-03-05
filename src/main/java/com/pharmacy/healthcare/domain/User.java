@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@MappedSuperclass
-@Table(name = "oauthusers")
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Table(name = "users")
 public abstract class User implements UserDetails {
 
     @Id

@@ -1,14 +1,14 @@
 package com.pharmacy.healthcare.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy extends MedicalCompany {
+
+//    @OneToOne(mappedBy = "medicalCompany", fetch = FetchType.EAGER)
+//    private MedicalCompany medicalCompany;
 
     @OneToMany(
             cascade = CascadeType.ALL,

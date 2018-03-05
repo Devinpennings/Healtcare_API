@@ -21,7 +21,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<Patient>> getUsers()
+    public ResponseEntity<Collection<User>> getUsers()
     {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }

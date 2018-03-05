@@ -2,7 +2,8 @@ package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "medicalCompany")
 public abstract class MedicalCompany {
 

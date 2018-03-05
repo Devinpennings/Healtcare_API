@@ -18,8 +18,12 @@ public class Appointment {
     @Column(name = "note", nullable = true)
     private String note;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne
+    @JoinColumn(name = "medicalCompany")
     private MedicalCompany medicalCompany;
+
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    private Doctor doctor;
 
     public Appointment(Long id, Date date, String note) {
         this.id = id;
