@@ -11,8 +11,8 @@ public class Patient extends User {
     protected Long age;
 
     @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Diagnosis> diagnoses;
 
