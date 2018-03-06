@@ -25,10 +25,10 @@ public class PatientsController {
         return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> add(@RequestBody Patient patient)
-    {
-        patientRepository.save(patient);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
+//    @RequestMapping(method = RequestMethod.POST)
+//    public ResponseEntity<?> add(@RequestBody Patient patient)
+//    {
+//        patientRepository.save(patient);
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
 }
