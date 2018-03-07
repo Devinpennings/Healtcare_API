@@ -11,16 +11,11 @@ public class Patient extends User {
     protected Long age;
 
     @OneToMany(
-            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<Diagnosis> diagnoses;
 
     public Long getAge() {
         return age;
-    }
-
-    public List<Diagnosis> getDiagnoses() {
-        return diagnoses;
     }
 }
