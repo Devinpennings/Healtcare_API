@@ -21,6 +21,9 @@ public class Diagnosis {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Patient patient;
+
     public Diagnosis(String category, String report) {
         this.category = category;
         this.report = report;
@@ -31,6 +34,11 @@ public class Diagnosis {
         this.category = category;
         this.report = report;
         this.date = date;
+    }
+
+    public Diagnosis()
+    {
+
     }
 
     public String getCategory() {

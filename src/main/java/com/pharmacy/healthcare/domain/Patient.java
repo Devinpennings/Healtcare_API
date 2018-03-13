@@ -19,14 +19,14 @@ public class Patient extends User {
     protected Long age;
 
     @OneToMany(
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
+            orphanRemoval = true
     )
     private List<Diagnosis> diagnoses;
 
     public Long getAge() {
         return age;
     }
+
 
     public List<Diagnosis> getDiagnoses() {
         return diagnoses;
@@ -138,10 +138,4 @@ public class Patient extends User {
                 }
             }
         }
-
-
-
-
-
-
-
+}

@@ -1,5 +1,6 @@
 package com.pharmacy.healthcare.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,15 +19,18 @@ public abstract class User implements UserDetails {
     @Column(name = "id", nullable = false, updatable = false)
     protected Long id;
 
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -44,16 +48,19 @@ public abstract class User implements UserDetails {
         return username;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
