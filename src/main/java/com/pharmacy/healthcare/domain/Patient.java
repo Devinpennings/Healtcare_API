@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 import java.util.Properties;
 
 @Entity
@@ -19,14 +20,19 @@ public class Patient extends User {
     protected Long age;
 
     @OneToMany(
-            orphanRemoval = true
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
     )
-    private List<Diagnosis> diagnoses;
+    private Set<Diagnosis> diagnoses;
 
     public Long getAge() {
         return age;
     }
 
+//     public void addDiagnosis(Diagnosis diagnosis)
+//     {
+//         diagnoses.add(diagnosis);
+//     }
 
     public List<Diagnosis> getDiagnoses() {
         return diagnoses;
