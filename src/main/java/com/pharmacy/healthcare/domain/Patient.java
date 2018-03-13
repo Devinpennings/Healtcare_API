@@ -34,35 +34,31 @@ public class Patient extends User {
 //         diagnoses.add(diagnosis);
 //     }
 
-    public List<Diagnosis> getDiagnoses() {
-        return diagnoses;
-    }
-
 
     /**
-     Outgoing Mail (SMTP) Server
-     requires TLS or SSL: smtp.gmail.com (use authentication)
-     Use Authentication: Yes
-     Port for SSL: 465
+     * Outgoing Mail (SMTP) Server
+     * requires TLS or SSL: smtp.gmail.com (use authentication)
+     * Use Authentication: Yes
+     * Port for SSL: 465
      */
 
     //for testing
-    public static void emailTest(String email){
+    public static void emailTest(String email) {
         String[] to = {email};
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "test", createHtmlStringBody("email.html"));
     }
 
-    public static void sendConformationMail(Patient patient){
+    public static void sendConformationMail(Patient patient) {
         //todo change template add date and name
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
-        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html") );
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html"));
     }
 
 
     public static void sendActivationMail(Patient patient) {
         //todo add confirmation link and name
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
-        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", createHtmlStringBody("email.html") );
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", createHtmlStringBody("email.html"));
     }
 
     private static String createHtmlStringBody(String htmlTemplateName) {
@@ -96,52 +92,49 @@ public class Patient extends User {
             // load the mail properties file with cred
             prop.load(input);
             return prop;
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
     private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
-                Properties props = System.getProperties();
-                String host = "smtp.gmail.com";
-                props.put("mail.smtp.starttls.enable", "true");
-                props.put("mail.smtp.host", host);
-                props.put("mail.smtp.user", from);
-                props.put("mail.smtp.password", pass);
-                props.put("mail.smtp.port", "587");
-                props.put("mail.smtp.auth", "true");
+        Properties props = System.getProperties();
+        String host = "smtp.gmail.com";
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.user", from);
+        props.put("mail.smtp.password", pass);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
 
-                Session session = Session.getDefaultInstance(props);
-                MimeMessage message = new MimeMessage(session);
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
 
-                try {
-                    message.setFrom(new InternetAddress(from));
-                    InternetAddress[] toAddress = new InternetAddress[to.length];
+        try {
+            message.setFrom(new InternetAddress(from));
+            InternetAddress[] toAddress = new InternetAddress[to.length];
 
-                    // To get the array of addresses
-                    for( int i = 0; i < to.length; i++ ) {
-                        toAddress[i] = new InternetAddress(to[i]);
-                    }
-
-                    for( int i = 0; i < toAddress.length; i++) {
-                        message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-                    }
-
-                    message.setSubject(subject);
-                    message.setContent(body, "text/html");
-                    Transport transport = session.getTransport("smtp");
-                    transport.connect(host, from, pass);
-                    transport.sendMessage(message, message.getAllRecipients());
-                    transport.close();
-                }
-                catch (AddressException ae) {
-                    ae.printStackTrace();
-                }
-                catch (MessagingException me) {
-                    me.printStackTrace();
-                }
+            // To get the array of addresses
+            for (int i = 0; i < to.length; i++) {
+                toAddress[i] = new InternetAddress(to[i]);
             }
+
+            for (int i = 0; i < toAddress.length; i++) {
+                message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+            }
+
+            message.setSubject(subject);
+            message.setContent(body, "text/html");
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, from, pass);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (AddressException ae) {
+            ae.printStackTrace();
+        } catch (MessagingException me) {
+            me.printStackTrace();
         }
+    }
 }
+
