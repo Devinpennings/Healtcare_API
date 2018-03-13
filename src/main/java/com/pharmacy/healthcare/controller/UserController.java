@@ -21,28 +21,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<User>> getUsers()
-    {
+    public ResponseEntity<Collection<User>> getUsers() {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<User> getUser(@PathVariable long id)
-//    {
-//        User user = userRepository.findOne(id);
-//        if (user != null)
-//        {
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        }
-//        else return null;
-//    }
-
-//    @RequestMapping(method = RequestMethod.POST)
-//    ResponseEntity<Void> save(@RequestBody User input)
-//    {
-//        if (userService.userExists(input.getUsername()))
-//        {
-//
-//        }
-//    }
 }
