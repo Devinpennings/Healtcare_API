@@ -2,6 +2,7 @@ package com.pharmacy.healthcare.controller;
 
 import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
+import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.services.DiagnosesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,20 @@ public class PatientsController {
     {
         System.out.println(diagnosis.toString());
         return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
+    public ResponseEntity<?> enableUser(@PathVariable String token, @RequestBody Patient patient){
+        User user = diagnosesService.validateToken(token);
+        if(user!=null){
+            //todo redirect naar login pagina
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @RequestMapping(value = "/new")
+    public ResponseEntity<?> addPatient(@RequestBody Patient patient){
+        return new ResponseEntity<>(diagnosesService.save(patient), HttpStatus.CREATED);
     }
 }
