@@ -25,8 +25,9 @@ public class DiagnosesService {
 
     public Patient save(Diagnosis diagnosis, long user_id)
     {
-        Patient patient = patientRepository.findOne(user_id);
+        Patient patient = patientRepository.findOneByUser(user_id);
         patient.addDiagnosis(diagnosis);
+        patientRepository.save(patient);
         return patient;
     }
 

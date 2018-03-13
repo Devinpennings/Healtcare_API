@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Properties;
@@ -22,17 +23,19 @@ public class Patient extends User {
     @OneToMany(
             orphanRemoval = true,
             cascade = CascadeType.ALL
+            //mappedBy = "user"
     )
-    private Set<Diagnosis> diagnoses;
+    private Set<Diagnosis> diagnoses = new HashSet<>();
 
     public Long getAge() {
         return age;
     }
 
-//     public void addDiagnosis(Diagnosis diagnosis)
-//     {
-//         diagnoses.add(diagnosis);
-//     }
+     public void addDiagnosis(Diagnosis diagnosis)
+     {
+         diagnoses.add(diagnosis);
+         System.out.println(diagnoses.toString());
+     }
 
 
     /**

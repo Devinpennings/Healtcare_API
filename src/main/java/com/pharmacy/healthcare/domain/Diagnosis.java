@@ -69,4 +69,15 @@ public class Diagnosis {
     public void setReport(String report) {
         this.report = report;
     }
+
+    @Override
+    public String toString() {
+        return "Diagnosis{" +
+                "id=" + id +
+                ", category='" + category + '\'' +
+                ", report='" + report + '\'' +
+                ", date=" + date +
+                ", patient=" + patient +
+                '}';
+    }
 }

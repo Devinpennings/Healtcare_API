@@ -43,9 +43,18 @@ public class PatientsController {
         }
     }
 
-    @RequestMapping(value = "/dossier/new", method = RequestMethod.POST)
-    public ResponseEntity<?> setDiagnose(@RequestBody Diagnosis diagnosis, long user_id)
+//    @RequestMapping(value = "/dossier/new/{id}", method = RequestMethod.POST)
+//    public ResponseEntity<?> setDiagnose(@PathVariable long id , @RequestBody Diagnosis diagnosis)
+//    {
+//        System.out.println(id);
+//        System.out.println(diagnosis.toString());
+//        return new ResponseEntity<>(diagnosesService.save(diagnosis, id), HttpStatus.CREATED);
+//    }
+
+    @RequestMapping(value = "/dossier/new/{userId}")
+    public ResponseEntity<?> setDiagnose(@PathVariable int userId, @RequestBody Diagnosis diagnosis)
     {
-        return new ResponseEntity<>(diagnosesService.save(diagnosis, user_id), HttpStatus.CREATED);
+        System.out.println(diagnosis.toString());
+        return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
     }
 }
