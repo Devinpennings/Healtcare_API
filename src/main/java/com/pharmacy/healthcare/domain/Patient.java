@@ -17,13 +17,12 @@ import java.util.Properties;
 @DiscriminatorValue("patient")
 public class Patient extends User {
 
-    @Column(name = "age", nullable = false)
+    @Column(name = "age", nullable = true)
     protected Long age;
 
     @OneToMany(
             orphanRemoval = true,
             cascade = CascadeType.ALL
-            //mappedBy = "user"
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
@@ -32,10 +31,10 @@ public class Patient extends User {
     }
 
      public void addDiagnosis(Diagnosis diagnosis)
-     {
-         diagnoses.add(diagnosis);
-         System.out.println(diagnoses.toString());
-     }
+    {
+        diagnoses.add(diagnosis);
+        System.out.println(diagnoses.toString());
+    }
 
 
     /**
@@ -46,25 +45,28 @@ public class Patient extends User {
      */
 
     //for testing
-    public static void emailTest(String email) {
+    public void emailTest(String email) {
         String[] to = {email};
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "test", createHtmlStringBody("email.html"));
     }
 
-    public static void sendConformationMail(Patient patient) {
+    public void sendConfirmationMail(Patient patient) {
         //todo change template add date and name
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html"));
     }
 
 
-    public static void sendActivationMail(Patient patient) {
-        //todo add confirmation link and name
+    public void sendActivationMail(Patient patient) {
+        //todo maak de placeholders in de html en user moet naam en achternaam krijgen
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
-        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", createHtmlStringBody("email.html"));
+        String email = createHtmlStringBody("email.html");
+        email = email.replaceAll("USERNAME", patient.getUsername());
+        email = email.replaceAll("endpoint", "www.zonnevelt.nl/patients/activate/" + patient.getActivationToken());
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
     }
 
-    private static String createHtmlStringBody(String htmlTemplateName) {
+    private String createHtmlStringBody(String htmlTemplateName) {
         StringBuilder contentBuilder = new StringBuilder();
         try {
             File template = new ClassPathResource(htmlTemplateName).getFile();
@@ -83,7 +85,7 @@ public class Patient extends User {
         }
     }
 
-    private static Properties getEmailProperties() {
+    private Properties getEmailProperties() {
         Properties prop = new Properties();
         InputStream input = null;
 
@@ -101,7 +103,7 @@ public class Patient extends User {
         }
     }
 
-    private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+    private void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
