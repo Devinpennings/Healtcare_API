@@ -22,6 +22,7 @@ public class Diagnosis {
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Patient patient;
 
     public Diagnosis(String category, String report) {

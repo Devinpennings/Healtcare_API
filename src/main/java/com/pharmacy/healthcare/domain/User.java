@@ -16,8 +16,8 @@ public abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
-    protected Long id;
+    @Column(name = "user_id", nullable = false, updatable = false)
+    protected Long user_id;
 
 
     @Column(name = "username", nullable = false, unique = true)

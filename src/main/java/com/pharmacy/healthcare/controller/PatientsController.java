@@ -1,5 +1,6 @@
 package com.pharmacy.healthcare.controller;
 
+import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.services.DiagnosesService;
@@ -40,5 +41,11 @@ public class PatientsController {
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value = "/dossier/new", method = RequestMethod.POST)
+    public ResponseEntity<?> setDiagnose(@RequestBody Diagnosis diagnosis, long user_id)
+    {
+        return new ResponseEntity<>(diagnosesService.save(diagnosis, user_id), HttpStatus.CREATED);
     }
 }

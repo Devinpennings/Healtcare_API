@@ -8,7 +8,7 @@ INSERT INTO diagnosis (category, date, report) VALUES
   ('category1', '20120618', 'report1'),
   ('category1', '20120618', 'report1')
 
-  INSERT INTO users_diagnoses(patient_id, diagnoses_id) VALUES
+  INSERT INTO users_diagnoses(patient_user_id, diagnoses_id) VALUES
  (2, 1),
   (2, 2)
 
