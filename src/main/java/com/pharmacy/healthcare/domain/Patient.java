@@ -38,6 +38,16 @@ public class Patient extends User {
         System.out.println(diagnoses.toString());
     }
 
+    public void removeDiagnosis(Diagnosis diagnosis)
+    {
+        diagnoses.remove(diagnosis);
+    }
+
+    public void removeAllDiagnoses()
+    {
+        diagnoses.clear();
+    }
+
 
     /**
      * Outgoing Mail (SMTP) Server
