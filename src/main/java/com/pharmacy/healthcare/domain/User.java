@@ -1,13 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.nashorn.internal.parser.Token;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -24,11 +23,11 @@ public abstract class User implements UserDetails {
     private String username;
 
     @JsonIgnore
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = true)
     private String password;
 
     @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+    private boolean enabled = false;
 
     @JsonIgnore
     @Override
@@ -37,6 +36,13 @@ public abstract class User implements UserDetails {
 
         return authorities;
     }
+
+    @JsonIgnore
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private Set<UserToken> tokens = new HashSet<>();
 
     @Override
     public String getPassword() {
@@ -70,4 +76,25 @@ public abstract class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void addToken(UserToken token)
+    {
+        tokens.add(token);
+        System.out.println(token.toString());
+    }
+
+    public String getActivationToken(){
+        for(UserToken t: tokens){
+            if(t.getTokenType().equals(TokenType.ACTIVATION)){
+                return t.getToken();
+            }
+        }
+        return null;
+    }
+
+
 }
