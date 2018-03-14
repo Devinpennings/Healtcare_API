@@ -18,6 +18,11 @@ public abstract class User implements UserDetails {
     @Column(name = "user_id", nullable = false, updatable = false)
     protected Long user_id;
 
+    @Column(name = "firstname", nullable = false, unique = false)
+    private String firstname;
+
+    @Column(name = "surname", nullable = false, unique = false)
+    private String surname;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -29,11 +34,12 @@ public abstract class User implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = false;
 
+    public abstract String getType();
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
         return authorities;
     }
 
@@ -52,6 +58,14 @@ public abstract class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     @JsonIgnore

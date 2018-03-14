@@ -15,6 +15,9 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -41,10 +44,24 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public TokenEnhancer tokenEnhancer(){
+		return new CustomTokenEnhancer();
+	}
+
+	@Bean
+	public AuthorizationServerTokenServices tokenServices(){
+		DefaultTokenServices tokenServices = new DefaultTokenServices();
+		tokenServices.setTokenEnhancer(tokenEnhancer());
+		return tokenServices;
+	}
+
+
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
 		configurer.authenticationManager(authenticationManager);
 		configurer.userDetailsService(userDetailsService);
+		configurer.tokenEnhancer(tokenEnhancer());
 	}
 
 	@Override

@@ -6,4 +6,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pharmacyEmployee")
 public class PharmacyEmployee extends User {
+
+    @Override
+    public String getType() {
+        return "pharmacyEmployee";
+    }
 }

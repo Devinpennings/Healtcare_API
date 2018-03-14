@@ -81,7 +81,7 @@ public class PatientsController {
     public ResponseEntity<?> enableUser(@PathVariable String token, @RequestBody Patient patient){
         User user = diagnosesService.validateToken(token);
         if(user!=null){
-            //todo redirect naar login pagina
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return ResponseEntity.notFound().build();
     }
