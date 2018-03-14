@@ -8,16 +8,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Properties;
 
 @Entity
 @DiscriminatorValue("patient")
-public class Patient extends User {
+public class Patient extends User implements Serializable {
 
     @Column(name = "age", nullable = true)
     protected Long age;
@@ -48,9 +45,6 @@ public class Patient extends User {
         diagnoses.clear();
     }
 
-
-
-
     /**
      * Outgoing Mail (SMTP) Server
      * requires TLS or SSL: smtp.gmail.com (use authentication)
@@ -75,7 +69,7 @@ public class Patient extends User {
         //todo maak de placeholders in de html en user moet naam en achternaam krijgen
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
         String email = createHtmlStringBody("email.html");
-        email = email.replaceAll("USERNAME", patient.getUsername());
+        email = email.replaceAll("USERNAME", patient.getFirstname());
         email = email.replaceAll("endpoint", "www.zonnevelt.nl/patients/activate/" + patient.getActivationToken());
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
     }

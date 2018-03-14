@@ -9,7 +9,6 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        System.out.println("ServletInitializer called.");
         return application.sources(HealthcareApplication.class);
     }
 }

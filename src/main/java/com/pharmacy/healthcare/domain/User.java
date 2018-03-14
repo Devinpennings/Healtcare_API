@@ -1,17 +1,17 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.parser.Token;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
-public abstract class User implements UserDetails {
+public abstract class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -110,5 +110,7 @@ public abstract class User implements UserDetails {
         return null;
     }
 
-
+    public Long getUser_id() {
+        return user_id;
+    }
 }

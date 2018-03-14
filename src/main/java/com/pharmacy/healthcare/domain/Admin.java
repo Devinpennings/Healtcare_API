@@ -2,11 +2,11 @@ package com.pharmacy.healthcare.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("admin")
-public class Admin extends User {
+public class Admin extends User implements Serializable {
 
     @Override
     public String getType() {

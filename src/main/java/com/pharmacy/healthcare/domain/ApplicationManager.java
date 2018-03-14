@@ -1,4 +1,6 @@
 package com.pharmacy.healthcare.domain;
 
-public class ApplicationManager {
+import java.io.Serializable;
+
+public class ApplicationManager implements Serializable {
 }

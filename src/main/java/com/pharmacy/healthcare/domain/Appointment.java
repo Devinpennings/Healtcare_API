@@ -1,11 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "appointment")
-public class Appointment {
+public class Appointment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,9 +22,6 @@ public class Appointment {
     @OneToOne
     @JoinColumn(name = "medicalCompany")
     private MedicalCompany medicalCompany;
-
-//    @ManyToOne(fetch=FetchType.EAGER)
-//    private Doctor doctor;
 
     public Appointment(Long id, Date date, String note) {
         this.id = id;

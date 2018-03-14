@@ -1,6 +1,8 @@
 package com.pharmacy.healthcare.domain;
 
-public class DoctorEmployee extends User{
+import java.io.Serializable;
+
+public class DoctorEmployee extends User implements Serializable{
 
     @Override
     public String getType() {

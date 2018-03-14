@@ -1,11 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "prescription")
-public class Prescription {
+public class Prescription implements Serializable {
 
 
     @Id
@@ -23,7 +24,7 @@ public class Prescription {
     private Double quantity;
 
     @Column(name = "instructions", nullable = false)
-    private String Instructions;
+    private String instructions;
 
     @Column(name = "date", nullable = false)
     private Date date;

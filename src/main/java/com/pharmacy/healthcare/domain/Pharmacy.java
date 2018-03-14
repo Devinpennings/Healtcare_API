@@ -1,14 +1,13 @@
 package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "pharmacy")
-public class Pharmacy extends MedicalCompany {
+public class Pharmacy extends MedicalCompany implements Serializable {
 
-//    @OneToOne(mappedBy = "medicalCompany", fetch = FetchType.EAGER)
-//    private MedicalCompany medicalCompany;
 
     @OneToMany(
             cascade = CascadeType.ALL,

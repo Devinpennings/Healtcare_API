@@ -1,11 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "medicalCompany")
-public abstract class MedicalCompany {
+public abstract class MedicalCompany implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

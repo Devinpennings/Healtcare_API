@@ -1,11 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "diagnosis")
-public class Diagnosis {
+public class Diagnosis implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

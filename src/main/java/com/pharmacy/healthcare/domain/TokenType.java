@@ -1,6 +1,8 @@
 package com.pharmacy.healthcare.domain;
 
-public enum TokenType {
+import java.io.Serializable;
+
+public enum TokenType implements Serializable {
 
     ACTIVATION,
     PASSWORDRESET
