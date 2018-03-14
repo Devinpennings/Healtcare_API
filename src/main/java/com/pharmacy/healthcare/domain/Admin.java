@@ -8,6 +8,11 @@ import javax.persistence.Table;
 @DiscriminatorValue("admin")
 public class Admin extends User {
 
+    @Override
+    public String getType() {
+        return "admin";
+    }
+
 
 
 

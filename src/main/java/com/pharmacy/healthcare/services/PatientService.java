@@ -55,7 +55,7 @@ public class PatientService {
         Patient p = patientRepository.save(patient);
         if (p != null){
             //todo generate random token
-            UserToken userToken = new UserToken("token", getTomorrowDate(), TokenType.ACTIVATION, false, p);
+            UserToken userToken = new UserToken("token", getActivationExpireDate(), TokenType.ACTIVATION, false, p);
             p.addToken(userToken);
             tokenRepository.save(userToken);
             p.sendActivationMail(p);
@@ -64,7 +64,7 @@ public class PatientService {
     }
 
     public User validateToken(String token){
-        User user = userRepository.findAllByToken(token);
+        User user = userRepository.findAllByToken(token, TokenType.ACTIVATION);
         if(user!=null){
             user.setEnabled(true);
             userRepository.save(user);
@@ -74,11 +74,11 @@ public class PatientService {
     }
 
 
-    public Date getTomorrowDate(){
+    public Date getActivationExpireDate(){
         java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Calendar cal = Calendar.getInstance();
         cal.setTime(sqlDate);
-        cal.add(Calendar.DAY_OF_YEAR,1);
+        cal.add(Calendar.DAY_OF_YEAR,7);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);

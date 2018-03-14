@@ -39,6 +39,8 @@ public class Patient extends User {
     }
 
 
+
+
     /**
      * Outgoing Mail (SMTP) Server
      * requires TLS or SSL: smtp.gmail.com (use authentication)
@@ -140,6 +142,11 @@ public class Patient extends User {
         } catch (MessagingException me) {
             me.printStackTrace();
         }
+    }
+
+    @Override
+    public String getType() {
+        return "patient";
     }
 }
 
