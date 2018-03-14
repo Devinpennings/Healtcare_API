@@ -44,24 +44,14 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public TokenEnhancer tokenEnhancer(){
-		return new CustomTokenEnhancer();
-	}
 
-	@Bean
-	public AuthorizationServerTokenServices tokenServices(){
-		DefaultTokenServices tokenServices = new DefaultTokenServices();
-		tokenServices.setTokenEnhancer(tokenEnhancer());
-		return tokenServices;
-	}
+
 
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
 		configurer.authenticationManager(authenticationManager);
 		configurer.userDetailsService(userDetailsService);
-		configurer.tokenEnhancer(tokenEnhancer());
 	}
 
 	@Override

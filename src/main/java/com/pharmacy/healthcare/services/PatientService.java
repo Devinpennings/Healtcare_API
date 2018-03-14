@@ -5,6 +5,7 @@ import com.pharmacy.healthcare.repository.DiagnosesRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.TokenRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,7 @@ public class PatientService {
     public Patient save(Patient patient){
         Patient p = patientRepository.save(patient);
         if (p != null){
-            //todo generate random token
-            UserToken userToken = new UserToken("token", getActivationExpireDate(), TokenType.ACTIVATION, false, p);
+            UserToken userToken = new UserToken(generateRandomToken(10), getActivationExpireDate(), TokenType.ACTIVATION, false, p);
             p.addToken(userToken);
             tokenRepository.save(userToken);
             p.sendActivationMail(p);
@@ -66,11 +66,25 @@ public class PatientService {
     public User validateToken(String token){
         User user = userRepository.findAllByToken(token, TokenType.ACTIVATION);
         if(user!=null){
-            user.setEnabled(true);
-            userRepository.save(user);
             return user;
         }
         return null;
+    }
+
+    public User setPassAndEnable(User user){
+        if(user!=null){
+            user.setEnabled(true);
+            userRepository.save(user);
+            //todo token to used
+            return user;
+        }
+        return null;
+    }
+
+    public String generateRandomToken(int length){
+        RandomStringGenerator generator = new RandomStringGenerator.Builder()
+                .withinRange('a', 'z').build();
+        return generator.generate(length);
     }
 
 
