@@ -8,6 +8,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -90,9 +92,7 @@ public class Patient extends User {
         InputStream input = null;
 
         try {
-            ClassPathResource resource = new ClassPathResource("email.properties");
-            File file = new File(resource.getClassLoader().getResource("email.properties").getFile());
-            input = new FileInputStream(file);
+            input = new FileInputStream(new File("WEB-INF/email.properties").getAbsolutePath());
 
             // load the mail properties file with cred
             prop.load(input);
