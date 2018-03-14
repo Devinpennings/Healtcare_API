@@ -8,6 +8,7 @@ import com.pharmacy.healthcare.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.config.ResourceNotFoundException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +53,10 @@ public class PatientsController {
     }
 
     @RequestMapping(value = "/dossier/delete/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId)
+    public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId, @RequestParam long userid)
     {
         try{
-            diagnosesService.deleteDiagnosis(diagnosisId);
+            diagnosesService.deleteDiagnosis(userid , diagnosisId);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e)
@@ -85,7 +86,6 @@ public class PatientsController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
     @RequestMapping(value = "/new")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient){

@@ -40,15 +40,18 @@ public class PatientService {
         return patient;
     }
 
-    public void deleteDiagnosis(long id)
+    public void deleteDiagnosis(long userid, long id)
     {
-       diagnosisRepository.delete(diagnosisRepository.findDiagnosesById(id));
+        Patient p = patientRepository.findOne(userid);
+        p.removeDiagnosis(diagnosisRepository.findDiagnosesById(id));
+        patientRepository.save(p);
     }
 
     public void deleteDossier(long userid)
     {
-       Collection<Diagnosis> diagnoses = diagnosisRepository.findAllByUserId(userid);
-       diagnosisRepository.delete(diagnoses);
+        Patient p = patientRepository.findOne(userid);
+        p.removeAllDiagnoses();
+        patientRepository.save(p);
     }
   
     public Patient save(Patient patient){
