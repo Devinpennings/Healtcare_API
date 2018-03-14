@@ -4,7 +4,7 @@ import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.PatientRepository;
-import com.pharmacy.healthcare.services.DiagnosesService;
+import com.pharmacy.healthcare.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class PatientsController {
     PatientRepository patientRepository;
 
     @Autowired
-    @Qualifier("diagnosesService")
-    DiagnosesService diagnosesService;
+    @Qualifier("patientService")
+    PatientService diagnosesService;
 
 
     @RequestMapping(method = RequestMethod.GET)
