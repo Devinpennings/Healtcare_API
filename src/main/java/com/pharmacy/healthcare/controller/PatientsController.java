@@ -7,6 +7,7 @@ import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class PatientsController {
     {
         if (id != 0)
         {
-            return new ResponseEntity<>(diagnosesService.findAllById(id), HttpStatus.OK);
+            return new ResponseEntity<>(diagnosesService.findAllByUserId(id), HttpStatus.OK);
         }
         else
         {
@@ -44,21 +45,38 @@ public class PatientsController {
         }
     }
 
-//    @RequestMapping(value = "/dossier/new/{id}", method = RequestMethod.POST)
-//    public ResponseEntity<?> setDiagnose(@PathVariable long id , @RequestBody Diagnosis diagnosis)
-//    {
-//        System.out.println(id);
-//        System.out.println(diagnosis.toString());
-//        return new ResponseEntity<>(diagnosesService.save(diagnosis, id), HttpStatus.CREATED);
-//    }
-
-    @RequestMapping(value = "/dossier/new/{userId}")
-    public ResponseEntity<?> setDiagnose(@PathVariable int userId, @RequestBody Diagnosis diagnosis)
+    @RequestMapping(value = "/dossier/new/{userId}", method = RequestMethod.POST)
+    public ResponseEntity<?> setDiagnose(@PathVariable long userId, @RequestBody Diagnosis diagnosis)
     {
-        System.out.println(diagnosis.toString());
         return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/dossier/delete/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId)
+    {
+        try{
+            diagnosesService.deleteDiagnosis(diagnosisId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @RequestMapping(value = "/dossier/delete/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDossier(@PathVariable long userId)
+    {
+        try {
+            diagnosesService.deleteDossier(userId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+  
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
     public ResponseEntity<?> enableUser(@PathVariable String token, @RequestBody Patient patient){
         User user = diagnosesService.validateToken(token);

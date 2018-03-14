@@ -20,16 +20,16 @@ public class PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
-
+  
     @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-    public Collection<Diagnosis> findAllById(long id)
+   public Collection<Diagnosis> findAllByUserId(long userid)
     {
-        return diagnosisRepository.findAllById(id);
+        return diagnosisRepository.findAllByUserId(userid);
     }
 
     public Patient save(Diagnosis diagnosis, long user_id)
@@ -40,6 +40,17 @@ public class PatientService {
         return patient;
     }
 
+    public void deleteDiagnosis(long id)
+    {
+       diagnosisRepository.delete(diagnosisRepository.findDiagnosesById(id));
+    }
+
+    public void deleteDossier(long userid)
+    {
+       Collection<Diagnosis> diagnoses = diagnosisRepository.findAllByUserId(userid);
+       diagnosisRepository.delete(diagnoses);
+    }
+  
     public Patient save(Patient patient){
         Patient p = patientRepository.save(patient);
         if (p != null){
