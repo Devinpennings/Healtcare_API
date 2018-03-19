@@ -21,14 +21,14 @@ public class PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
-  
+
     @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-   public Collection<Diagnosis> findAllByUserId(long userid)
+    public Collection<Diagnosis> findAllByUserId(long userid)
     {
         return diagnosisRepository.findAllByUserId(userid);
     }
@@ -54,7 +54,7 @@ public class PatientService {
         p.removeAllDiagnoses();
         patientRepository.save(p);
     }
-  
+
     public Patient save(Patient patient){
         Patient p = patientRepository.save(patient);
         if (p != null){
@@ -67,8 +67,10 @@ public class PatientService {
     }
 
     public User validateToken(String token){
-        User user = userRepository.findAllByToken(token, TokenType.ACTIVATION);
+        User user = userRepository.findAllByToken(token);
         if(user!=null){
+            user.setEnabled(true);
+            userRepository.save(user);
             return user;
         }
         return null;

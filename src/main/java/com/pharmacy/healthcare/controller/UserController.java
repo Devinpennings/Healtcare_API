@@ -26,8 +26,6 @@ public class UserController {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
-
-
 //    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //    public ResponseEntity<User> getUser(@PathVariable long id)
 //    {

@@ -18,6 +18,12 @@ public abstract class User implements UserDetails, Serializable {
     @Column(name = "user_id", nullable = false, updatable = false)
     protected Long user_id;
 
+    @Column(name = "firstname", nullable = false, unique = false)
+    private String firstname;
+
+    @Column(name = "surname", nullable = false, unique = false)
+    private String surname;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -52,6 +58,14 @@ public abstract class User implements UserDetails, Serializable {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     @JsonIgnore

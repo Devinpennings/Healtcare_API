@@ -70,7 +70,7 @@ public class Patient extends User implements Serializable {
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
         String email = createHtmlStringBody("email.html");
         email = email.replaceAll("USERNAME", patient.getFirstname());
-        email = email.replaceAll("endpoint", "www.zonnevelt.nl/patients/activate/" + patient.getActivationToken());
+        email = email.replaceAll("endpoint", "http://localhost:8080/patients/activate/" + patient.getActivationToken());
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
     }
 

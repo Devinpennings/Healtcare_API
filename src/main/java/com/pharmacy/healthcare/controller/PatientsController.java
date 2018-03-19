@@ -4,8 +4,6 @@ import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.PatientRepository;
-import com.pharmacy.healthcare.repository.TokenRepository;
-import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,12 +20,6 @@ public class PatientsController {
 
     @Autowired
     PatientRepository patientRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    TokenRepository tokenRepository;
 
     @Autowired
     @Qualifier("patientService")
@@ -53,15 +45,13 @@ public class PatientsController {
         }
     }
 
-
-
-    @RequestMapping(value = "/dossier/new/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/dossier/{userId}", method = RequestMethod.POST)
     public ResponseEntity<?> setDiagnose(@PathVariable long userId, @RequestBody Diagnosis diagnosis)
     {
         return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/dossier/delete/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/dossier/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId, @RequestParam long userid)
     {
         try{
@@ -74,7 +64,7 @@ public class PatientsController {
         }
     }
 
-    @RequestMapping(value = "/dossier/delete/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/dossier/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDossier(@PathVariable long userId)
     {
         try {
@@ -86,15 +76,9 @@ public class PatientsController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
-    public ResponseEntity<?> setDiagnose(@PathVariable String token, @RequestBody String Password)
-    {
-        return new ResponseEntity<>(diagnosesService.setPassAndEnable(patientRepository.findOneByUser(patientRepository.findPatientByToken(token).getUser_id())), HttpStatus.OK);
-    }
   
-    @RequestMapping(value = "/validate/{token}", method = RequestMethod.POST)
-    public ResponseEntity<?> enableUser(@PathVariable String token, @RequestBody Patient patient){
+    @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
+    public ResponseEntity<?> enableUser(@PathVariable String token){
         User user = diagnosesService.validateToken(token);
         if(user!=null){
             return new ResponseEntity<>(user, HttpStatus.OK);

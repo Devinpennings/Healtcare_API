@@ -37,6 +37,11 @@ public class UserToken implements Serializable {
         this.user = user;
     }
 
+    public UserToken()
+    {
+
+    }
+
     public String getToken() {
         return token;
     }

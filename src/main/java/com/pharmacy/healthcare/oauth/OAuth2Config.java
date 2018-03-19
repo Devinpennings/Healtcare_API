@@ -91,6 +91,10 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 		return defaultTokenServices;
 	}
 
+	@Bean
+	public TokenEnhancer tokenEnhancer(){
+		return new CustomTokenEnhancer();
+	}
 
 	@Bean
 	public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
