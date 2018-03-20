@@ -1,5 +1,6 @@
 package com.pharmacy.healthcare.controller;
 
+import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
@@ -39,6 +40,25 @@ public class PatientsController {
     public ResponseEntity<Collection<Patient>> getPatients()
     {
         return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
+                                        @RequestBody Patient patient){
+        Patient currentUser = (Patient) userRepository.findOne(id);
+
+        if (currentUser == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else{
+            currentUser.setUsername(patient.getUsername());
+            currentUser.setFirstname(patient.getFirstname());
+            currentUser.setSurname(patient.getSurname());
+            currentUser.setAge(patient.getAge());
+
+            userRepository.save(currentUser);
+            return new ResponseEntity<Patient>(currentUser, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/dossier/{id}", method = RequestMethod.GET)
