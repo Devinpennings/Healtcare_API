@@ -16,6 +16,9 @@ import java.util.Properties;
 @DiscriminatorValue("patient")
 public class Patient extends User implements Serializable {
 
+    public Patient() {
+    }
+
     @Column(name = "age", nullable = true)
     protected Long age;
 
@@ -47,6 +50,10 @@ public class Patient extends User implements Serializable {
     public void removeAllDiagnoses()
     {
         diagnoses.clear();
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
     }
 
     /**

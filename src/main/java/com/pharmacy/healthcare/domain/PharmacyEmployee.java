@@ -8,6 +8,9 @@ import java.io.Serializable;
 @Table(name = "pharmacyEmployee")
 public class PharmacyEmployee extends User implements Serializable {
 
+    public PharmacyEmployee() {
+    }
+
     @Override
     public String getType() {
         return "pharmacyEmployee";
