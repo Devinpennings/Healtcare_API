@@ -25,6 +25,10 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private Doctor doctor;
+
     public Long getAge() {
         return age;
     }
@@ -70,7 +74,7 @@ public class Patient extends User implements Serializable {
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
         String email = createHtmlStringBody("email.html");
         email = email.replaceAll("USERNAME", patient.getFirstname());
-        email = email.replaceAll("endpoint", "http://localhost:8080/patients/activate/" + patient.getActivationToken());
+        email = email.replaceAll("endpoint", "http://localhost:8080/register?token=" + patient.getActivationToken());
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
     }
 

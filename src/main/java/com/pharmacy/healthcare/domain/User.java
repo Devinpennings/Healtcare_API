@@ -1,8 +1,10 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -108,6 +110,10 @@ public abstract class User implements UserDetails, Serializable {
             }
         }
         return null;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getUser_id() {

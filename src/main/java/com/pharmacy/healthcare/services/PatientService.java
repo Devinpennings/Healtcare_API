@@ -69,7 +69,6 @@ public class PatientService {
     public User validateToken(String token){
         User user = userRepository.findAllByToken(token);
         if(user!=null){
-            user.setEnabled(true);
             userRepository.save(user);
             return user;
         }

@@ -4,12 +4,15 @@ import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.PatientRepository;
+import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.config.ResourceNotFoundException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -20,6 +23,12 @@ public class PatientsController {
 
     @Autowired
     PatientRepository patientRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     @Qualifier("patientService")
@@ -77,8 +86,8 @@ public class PatientsController {
         }
     }
   
-    @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
-    public ResponseEntity<?> enableUser(@PathVariable String token){
+    @RequestMapping(value = "/validate/{token}", method = RequestMethod.PUT)
+    public ResponseEntity<?> validateUser(@PathVariable String token){
         User user = diagnosesService.validateToken(token);
         if(user!=null){
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -86,7 +95,21 @@ public class PatientsController {
         return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/new")
+    @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
+    public ResponseEntity<?> enableUser(@PathVariable String token, @Param("password") String password)
+    {
+        User user = diagnosesService.validateToken(token);
+        if (user != null)
+        {
+            user.setPassword(passwordEncoder.encode(password));
+            user.setEnabled(true);
+            userRepository.save(user);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ResponseEntity<?> addPatient(@RequestBody Patient patient){
         return new ResponseEntity<>(diagnosesService.save(patient), HttpStatus.CREATED);
     }
