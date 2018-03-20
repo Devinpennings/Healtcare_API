@@ -14,5 +14,6 @@ public class Doctor extends User implements Serializable{
         return "doctor";
     }
 
-
+    public Doctor() {
+    }
 }

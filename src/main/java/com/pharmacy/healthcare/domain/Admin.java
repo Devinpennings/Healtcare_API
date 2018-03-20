@@ -8,6 +8,9 @@ import java.io.Serializable;
 @DiscriminatorValue("admin")
 public class Admin extends User implements Serializable {
 
+    public Admin() {
+    }
+
     @Override
     public String getType() {
         return "admin";
