@@ -32,7 +32,7 @@ public class PatientsController {
 
     @Autowired
     @Qualifier("patientService")
-    PatientService diagnosesService;
+    PatientService patientService;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -46,7 +46,7 @@ public class PatientsController {
     {
         if (id != 0)
         {
-            return new ResponseEntity<>(diagnosesService.findAllByUserId(id), HttpStatus.OK);
+            return new ResponseEntity<>(patientService.findAllByUserId(id), HttpStatus.OK);
         }
         else
         {
@@ -57,14 +57,14 @@ public class PatientsController {
     @RequestMapping(value = "/dossier/{userId}", method = RequestMethod.POST)
     public ResponseEntity<?> setDiagnose(@PathVariable long userId, @RequestBody Diagnosis diagnosis)
     {
-        return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
+        return new ResponseEntity<>(patientService.save(diagnosis, userId), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/dossier/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId, @RequestParam long userid)
     {
         try{
-            diagnosesService.deleteDiagnosis(userid , diagnosisId);
+            patientService.deleteDiagnosis(userid , diagnosisId);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e)
@@ -77,7 +77,7 @@ public class PatientsController {
     public ResponseEntity<?> deleteDossier(@PathVariable long userId)
     {
         try {
-            diagnosesService.deleteDossier(userId);
+            patientService.deleteDossier(userId);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e)
@@ -88,7 +88,7 @@ public class PatientsController {
   
     @RequestMapping(value = "/validate/{token}", method = RequestMethod.PUT)
     public ResponseEntity<?> validateUser(@PathVariable String token){
-        User user = diagnosesService.validateToken(token);
+        User user = patientService.validateToken(token);
         if(user!=null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -98,7 +98,7 @@ public class PatientsController {
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
     public ResponseEntity<?> enableUser(@PathVariable String token, @Param("password") String password)
     {
-        User user = diagnosesService.validateToken(token);
+        User user = patientService.validateToken(token);
         if (user != null)
         {
             user.setPassword(passwordEncoder.encode(password));
@@ -111,6 +111,6 @@ public class PatientsController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ResponseEntity<?> addPatient(@RequestBody Patient patient){
-        return new ResponseEntity<>(diagnosesService.save(patient), HttpStatus.CREATED);
+        return new ResponseEntity<>(patientService.save(patient), HttpStatus.CREATED);
     }
 }

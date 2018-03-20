@@ -1,11 +1,9 @@
 package com.pharmacy.healthcare.domain;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@DiscriminatorValue("admin")
+@MappedSuperclass
 public class Admin extends User implements Serializable {
 
     @Override

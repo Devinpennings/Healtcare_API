@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@Table(name = "users")
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements UserDetails, Serializable {
 
+    @TableGenerator(name = "USER_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "USER_GEN")
     @Column(name = "user_id", nullable = false, updatable = false)
     protected Long user_id;
 

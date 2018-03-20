@@ -14,8 +14,8 @@ public class Prescription implements Serializable {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    private Medicine medicine;
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    private Medicine medicine;
 
     @Column(name = "unitOfMeasure", nullable = false)
     private String unitOfMeasure;
@@ -29,8 +29,8 @@ public class Prescription implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    private Patient patient;
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    private Patient patient;
 
 
 

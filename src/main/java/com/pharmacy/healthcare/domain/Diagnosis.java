@@ -1,7 +1,10 @@
 package com.pharmacy.healthcare.domain;
 
+import com.pharmacy.healthcare.aes.EncryptionUtil;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 
 @Entity
@@ -14,37 +17,20 @@ public class Diagnosis implements Serializable {
     private long id;
 
     @Column(name = "category", nullable = false)
-    private String category;
+    private byte[] category;
 
     @Column(name = "report", nullable = false)
-    private String report;
+    private byte[] report;
 
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Patient patient;
-
-    public Diagnosis(String category, String report) {
-        this.category = category;
-        this.report = report;
-    }
-
-    public Diagnosis(Long id, String category, String report, Date date) {
-        this.id = id;
-        this.category = category;
-        this.report = report;
-        this.date = date;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private Patient patient;
 
     public Diagnosis()
     {
-
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     public long getId() {
@@ -59,16 +45,20 @@ public class Diagnosis implements Serializable {
         this.date = date;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getCategory() throws GeneralSecurityException {
+        return EncryptionUtil.decrypt(category);
     }
 
-    public String getReport() {
-        return report;
+    public void setCategory(String category) throws GeneralSecurityException {
+        this.category = EncryptionUtil.encrypt(category);
     }
 
-    public void setReport(String report) {
-        this.report = report;
+    public String getReport() throws GeneralSecurityException {
+            return EncryptionUtil.decrypt(report);
+    }
+
+    public void setReport(String report) throws GeneralSecurityException {
+        this.report = EncryptionUtil.encrypt(report);
     }
 
     @Override
@@ -78,7 +68,7 @@ public class Diagnosis implements Serializable {
                 ", category='" + category + '\'' +
                 ", report='" + report + '\'' +
                 ", date=" + date +
-                ", patient=" + patient +
+//                ", patient=" + patient +
                 '}';
     }
 }

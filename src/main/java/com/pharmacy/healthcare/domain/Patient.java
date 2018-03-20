@@ -1,5 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.mail.*;
@@ -12,8 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Properties;
 
-@Entity
-@DiscriminatorValue("patient")
+@MappedSuperclass
 public class Patient extends User implements Serializable {
 
     @Column(name = "age", nullable = true)
@@ -25,8 +26,8 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
     private Doctor doctor;
 
     public Long getAge() {

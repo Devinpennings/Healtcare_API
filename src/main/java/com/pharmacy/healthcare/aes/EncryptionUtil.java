@@ -18,7 +18,6 @@ public class EncryptionUtil {
 
 
     static {
-        //todo evt wijzigen als we de key opslaan op de db
         res = new ClassPathResource("key");
         if (res != null) {
             try {

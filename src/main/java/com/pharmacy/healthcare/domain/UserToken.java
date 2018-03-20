@@ -25,16 +25,16 @@ public class UserToken implements Serializable {
     @Column(name = "used", nullable = false)
     private Boolean used = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Patient user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private Patient user;
 
     public UserToken(String token, Date expireDate, TokenType tokenType, Boolean used, Patient user) {
         this.token = token;
         this.expireDate = expireDate;
         this.tokenType = tokenType;
         this.used = used;
-        this.user = user;
+//        this.user = user;
     }
 
     public UserToken()
@@ -58,7 +58,7 @@ public class UserToken implements Serializable {
         return used;
     }
 
-    public Patient getUser() {
-        return user;
-    }
+//    public Patient getUser() {
+//        return user;
+//    }
 }

@@ -1,16 +1,18 @@
 package com.pharmacy.healthcare.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@DiscriminatorValue("doctor")
+@MappedSuperclass
 public class Doctor extends User implements Serializable{
+
+
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "doctor_id", nullable = false, updatable = false)
+//    protected Long doctor_id;
 
     @OneToMany(
             orphanRemoval = true,
@@ -23,5 +25,8 @@ public class Doctor extends User implements Serializable{
         return "doctor";
     }
 
-
+    public void addPatient(Patient patient)
+    {
+        this.patients.add(patient);
+    }
 }
