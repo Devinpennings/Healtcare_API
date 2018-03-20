@@ -1,6 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.*;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
+//@JsonDeserialize(as = User.class)
 public abstract class User implements UserDetails, Serializable {
 
     @Id
@@ -70,6 +72,18 @@ public abstract class User implements UserDetails, Serializable {
         return surname;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
@@ -118,5 +132,9 @@ public abstract class User implements UserDetails, Serializable {
 
     public Long getUser_id() {
         return user_id;
+    }
+
+    public User() {
+
     }
 }
