@@ -1,6 +1,7 @@
 package com.pharmacy.healthcare.controller;
 
 import com.pharmacy.healthcare.domain.Admin;
+import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admins")
 public class AdminController {
 
     @Autowired
