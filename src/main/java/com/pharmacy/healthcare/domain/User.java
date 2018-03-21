@@ -1,11 +1,8 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,8 +21,8 @@ public abstract class User implements UserDetails, Serializable {
     @Column(name = "firstname", nullable = false, unique = false)
     private String firstname;
 
-    @Column(name = "surname", nullable = false, unique = false)
-    private String surname;
+    @Column(name = "lastname", nullable = false, unique = false)
+    private String lastname;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -67,16 +64,16 @@ public abstract class User implements UserDetails, Serializable {
         return firstname;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastname() {
+        return lastname;
     }
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public void setUsername(String username) {

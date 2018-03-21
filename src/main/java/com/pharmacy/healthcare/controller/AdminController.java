@@ -30,11 +30,17 @@ public class AdminController {
         else{
             currentUser.setUsername(admin.getUsername());
             currentUser.setFirstname(admin.getFirstname());
-            currentUser.setSurname(admin.getSurname());
+            currentUser.setLastname(admin.getLastname());
 
             userRepository.save(currentUser);
             return new ResponseEntity<>(currentUser, HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getAllEmployees()
+    {
+        return new ResponseEntity<>(userRepository.findAllByType(), HttpStatus.OK);
     }
 
 }

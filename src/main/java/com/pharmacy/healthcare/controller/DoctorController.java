@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-
 @RestController
 @RequestMapping("/doctors")
 public class DoctorController {
@@ -38,7 +36,7 @@ public class DoctorController {
         else{
             currentUser.setUsername(doctor.getUsername());
             currentUser.setFirstname(doctor.getFirstname());
-            currentUser.setSurname(doctor.getSurname());
+            currentUser.setLastname(doctor.getLastname());
 
             userRepository.save(currentUser);
             return new ResponseEntity<Doctor>(currentUser, HttpStatus.OK);

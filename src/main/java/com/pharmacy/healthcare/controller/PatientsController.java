@@ -52,7 +52,7 @@ public class PatientsController {
         else{
             currentUser.setUsername(patient.getUsername());
             currentUser.setFirstname(patient.getFirstname());
-            currentUser.setSurname(patient.getSurname());
+            currentUser.setLastname(patient.getLastname());
 
             userRepository.save(currentUser);
             return new ResponseEntity<Patient>(currentUser, HttpStatus.OK);

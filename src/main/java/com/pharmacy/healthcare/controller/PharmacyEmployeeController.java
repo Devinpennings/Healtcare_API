@@ -1,6 +1,5 @@
 package com.pharmacy.healthcare.controller;
 
-import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.PharmacyEmployee;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class PharmacyEmployeeController {
         else{
             currentUser.setUsername(pharmacyEmployee.getUsername());
             currentUser.setFirstname(pharmacyEmployee.getFirstname());
-            currentUser.setSurname(pharmacyEmployee.getSurname());
+            currentUser.setLastname(pharmacyEmployee.getLastname());
 
             userRepository.save(currentUser);
             return new ResponseEntity<PharmacyEmployee>(currentUser, HttpStatus.OK);
