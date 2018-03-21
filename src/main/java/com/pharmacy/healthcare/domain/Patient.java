@@ -20,11 +20,11 @@ public class Patient extends User implements Serializable {
     public Patient() {
     }
 
-    @Column(name = "age", nullable = true)
-    protected Date age;
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Doctor doctor;
 
-    @Column(name = "doctor_id", nullable = true, updatable = false)
-    protected Long doctor_id;
+    @Column(name = "age", nullable = true)
+    protected Long age;
 
     @OneToMany(
             orphanRemoval = true,
@@ -32,7 +32,7 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
-    public Date getAge() {
+    public Long getAge() {
         return age;
     }
 
@@ -56,14 +56,17 @@ public class Patient extends User implements Serializable {
         this.age = age;
     }
 
+    @Override
+    public String getType() {
+        return "patient";
+    }
+
     /**
      * Outgoing Mail (SMTP) Server
      * requires TLS or SSL: smtp.gmail.com (use authentication)
      * Use Authentication: Yes
      * Port for SSL: 465
      */
-
-    //for testing
     public void emailTest(String email) {
         String[] to = {email};
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "test", createHtmlStringBody("email.html"));
@@ -159,9 +162,5 @@ public class Patient extends User implements Serializable {
         }
     }
 
-    @Override
-    public String getType() {
-        return "patient";
-    }
 }
 
