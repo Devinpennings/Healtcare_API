@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Properties;
@@ -16,8 +17,14 @@ import java.util.Properties;
 @DiscriminatorValue("patient")
 public class Patient extends User implements Serializable {
 
+    public Patient() {
+    }
+
     @Column(name = "age", nullable = true)
-    protected Long age;
+    protected Date age;
+
+    @Column(name = "doctor_id", nullable = true, updatable = false)
+    protected Long doctor_id;
 
     @OneToMany(
             orphanRemoval = true,
@@ -25,11 +32,7 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private Doctor doctor;
-
-    public Long getAge() {
+    public Date getAge() {
         return age;
     }
 
@@ -47,6 +50,10 @@ public class Patient extends User implements Serializable {
     public void removeAllDiagnoses()
     {
         diagnoses.clear();
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
     }
 
     /**
