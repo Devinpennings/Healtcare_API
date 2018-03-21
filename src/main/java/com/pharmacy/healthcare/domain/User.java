@@ -1,6 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,8 @@ public abstract class User implements UserDetails, Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = true)
     private String password;
 

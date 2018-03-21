@@ -133,7 +133,7 @@ public class PatientsController {
         return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<?> addPatient(@RequestBody Patient patient){
         return new ResponseEntity<>(diagnosesService.save(patient), HttpStatus.CREATED);
     }
