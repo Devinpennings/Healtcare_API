@@ -45,7 +45,7 @@ public class DoctorEmployeeController {
         else{
             currentUser.setUsername(doctorEmployee.getUsername());
             currentUser.setFirstname(doctorEmployee.getFirstname());
-            currentUser.setSurname(doctorEmployee.getSurname());
+            currentUser.setLastname(doctorEmployee.getLastname());
 
             userRepository.save(currentUser);
             return new ResponseEntity<DoctorEmployee>(currentUser, HttpStatus.OK);
