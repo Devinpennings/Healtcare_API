@@ -1,6 +1,5 @@
 package com.pharmacy.healthcare.controller;
 
-import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.Diagnosis;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
@@ -13,7 +12,6 @@ import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,11 +53,16 @@ public class PatientsController {
             currentUser.setUsername(patient.getUsername());
             currentUser.setFirstname(patient.getFirstname());
             currentUser.setSurname(patient.getSurname());
-            currentUser.setAge(patient.getAge());
 
             userRepository.save(currentUser);
             return new ResponseEntity<Patient>(currentUser, HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getPatient(@PathVariable long id )
+    {
+        return new ResponseEntity<>(patientRepository.findOne(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/dossier/{id}", method = RequestMethod.GET)

@@ -33,7 +33,7 @@ public class AdminController {
             currentUser.setSurname(admin.getSurname());
 
             userRepository.save(currentUser);
-            return new ResponseEntity<Admin>(currentUser, HttpStatus.OK);
+            return new ResponseEntity<>(currentUser, HttpStatus.OK);
         }
     }
 

@@ -14,7 +14,6 @@ import java.util.*;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
-//@JsonDeserialize(as = User.class)
 public abstract class User implements UserDetails, Serializable {
 
     @Id
@@ -117,6 +116,7 @@ public abstract class User implements UserDetails, Serializable {
         System.out.println(token.toString());
     }
 
+    @JsonIgnore
     public String getActivationToken(){
         for(UserToken t: tokens){
             if(t.getTokenType().equals(TokenType.ACTIVATION)){
