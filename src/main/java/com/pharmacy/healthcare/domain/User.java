@@ -31,7 +31,6 @@ public abstract class User implements UserDetails, Serializable {
     private String username;
 
     //@JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = true)
     private String password;
 
@@ -55,6 +54,7 @@ public abstract class User implements UserDetails, Serializable {
     private Set<UserToken> tokens = new HashSet<>();
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
