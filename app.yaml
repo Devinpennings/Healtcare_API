@@ -3,7 +3,7 @@ env: flex
 
 handlers:
 - url: /.*
-script: this field is required, but ignored
+  script: this field is required, but ignored
 
 beta_settings:
   enable_app_engine_apis: true
