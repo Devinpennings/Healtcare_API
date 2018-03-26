@@ -1,11 +1,11 @@
 language: java
 jdk:
 - oraclejdk8
-#deploy:
-#  provider: gae
-#  keyfile: secret.json
-#  project: healthcare-196408
+deploy:
+  provider: gae
+  keyfile: secret.json
+  project: healthcare-196408
 before_install:
 - chmod +x mvnw
-#- openssl aes-256-cbc -K $encrypted_07ec618bb998_key -iv $encrypted_07ec618bb998_iv
-#  -in secret.json.enc -out secret.json -d
+- openssl aes-256-cbc -K $encrypted_07ec618bb998_key -iv $encrypted_07ec618bb998_iv
+  -in secret.json.enc -out secret.json -d
