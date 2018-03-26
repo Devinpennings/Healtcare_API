@@ -132,20 +132,20 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.3.7.v20160115</version>
 			</plugin>
-			<!--<plugin>-->
-				<!--<artifactId>maven-war-plugin</artifactId>-->
-				<!--<version>3.1.0</version>-->
-				<!--<configuration>-->
-					<!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
-					<!--<webResources>-->
-						<!--<resource>-->
-							<!--<directory>${basedir}/src/main/webapp/WEB-INF</directory>-->
-							<!--<filtering>true</filtering>-->
-							<!--<targetPath>WEB-INF</targetPath>-->
-						<!--</resource>-->
-					<!--</webResources>-->
-				<!--</configuration>-->
-			<!--</plugin>-->
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+							<filtering>true</filtering>
+							<targetPath>WEB-INF</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
