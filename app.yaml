@@ -1,2 +1,5 @@
 runtime: java
 env: flex
+
+beta_settings:
+  enable_app_engine_apis: true
