@@ -1,5 +1,6 @@
 runtime: java
 env: flex
+service: healthcare
 
 handlers:
 - url: /.*
