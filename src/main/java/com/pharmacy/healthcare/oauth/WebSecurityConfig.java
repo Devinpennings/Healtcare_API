@@ -33,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/login")
 				.and().ignoring().antMatchers("/patients/activate/**")
-		.and().ignoring().antMatchers("/patients/validate/**");
+		.and().ignoring().antMatchers("/patients/validate/**")
+		.and().ignoring().antMatchers("/_ah/**");
 	}
 
 	@Override
