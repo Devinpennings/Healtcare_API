@@ -1,5 +1,5 @@
-FROM openjdk:8-jre-alpine
-COPY ./target/healthcare-1.0.jar /usr/src/healthcare/
-WORKDIR /usr/src/healthcare
-EXPOSE 8080
-CMD ["java", "-jar", "healthcare-1.0.jar"]
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+ADD ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
