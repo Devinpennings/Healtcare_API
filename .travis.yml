@@ -8,5 +8,3 @@ deploy:
 before_install:
 - openssl aes-256-cbc -K $encrypted_07ec618bb998_key -iv $encrypted_07ec618bb998_iv
   -in secret.json.enc -out secret.json -d
-- openssl aes-256-cbc -K $encrypted_b4195608ac89_key -iv $encrypted_b4195608ac89_iv
-  -in secret.json.enc -out secret.json -d
