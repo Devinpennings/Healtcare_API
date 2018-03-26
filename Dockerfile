@@ -1,3 +1,4 @@
-FROM jetty
-ADD target/healthcare-1.0.war /var/lib/jetty/webapps/root.war
-EXPOSE 8080
+FROM anapsix/alpine-java
+MAINTAINER gieforce
+COPY healthcare-1.0.jar /home/healthcare-1.0.jar
+CMD ["java","-jar","/home/healthcare-1.0.jar"]
