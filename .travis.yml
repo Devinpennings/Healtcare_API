@@ -7,6 +7,7 @@ deploy:
   skip_cleanup: true
   keyfile: secret.json
   project: healthcare-196408
+  file: 'healthcare-1.0.jar'
 before_install:
 - chmod +x mvnw
 - openssl aes-256-cbc -K $encrypted_07ec618bb998_key -iv $encrypted_07ec618bb998_iv
