@@ -6,7 +6,7 @@
 	<groupId>com.pharmacy</groupId>
 	<artifactId>healthcare</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>healthcare</name>
 	<description>Healthcare application</description>
