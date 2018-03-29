@@ -24,7 +24,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Collection<User>> getUsers() {
+    public ResponseEntity<?> getUsers() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(user.getType());
         if (user != null) {
