@@ -6,7 +6,7 @@
 	<groupId>com.pharmacy</groupId>
 	<artifactId>healthcare</artifactId>
 	<version>1.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>healthcare</name>
 	<description>Healthcare application</description>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>springio</docker.image.prefix>
+		<docker.image.prefix>apies</docker.image.prefix>
 	</properties>
 	
 
