@@ -32,14 +32,33 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private Set<Appointment> appointments = new HashSet<>();
+
+
     public Long getAge() {
         return age;
     }
 
-     public void addDiagnosis(Diagnosis diagnosis)
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void addDiagnosis(Diagnosis diagnosis)
     {
         diagnoses.add(diagnosis);
         System.out.println(diagnoses.toString());
+    }
+
+    public void addAppointment(Appointment appointment){
+        appointments.add(appointment);
+    }
+
+    public void removeAppointment(Appointment appointment){
+        appointments.remove(appointment);
     }
 
     public void removeDiagnosis(Diagnosis diagnosis)

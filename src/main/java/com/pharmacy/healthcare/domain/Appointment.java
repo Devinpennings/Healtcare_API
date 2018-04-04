@@ -3,6 +3,9 @@ package com.pharmacy.healthcare.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "appointment")
@@ -14,35 +17,39 @@ public class Appointment implements Serializable {
     private long id;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private Timestamp date;
 
     @Column(name = "note", nullable = true)
     private String note;
 
-    @OneToOne
-    @JoinColumn(name = "medicalCompany")
-    private MedicalCompany medicalCompany;
+//    @OneToOne
+//    @JoinColumn(name = "medicalCompany")
+//    private MedicalCompany medicalCompany;
 
-    public Appointment(Long id, Date date, String note) {
+    public Appointment(Long id, Timestamp date, String note) {
         this.id = id;
         this.date = date;
         this.note = note;
     }
 
-    public Appointment(Date date, String note) {
+    public Appointment(Timestamp date, String note) {
         this.date = date;
         this.note = note;
+    }
+
+    public Appointment(){
+
     }
 
     public long getId() {
         return id;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -26,6 +26,20 @@ public class Doctor extends User implements Serializable{
     )
     private Set<Patient> patients = new HashSet<>();
 
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private Set<Appointment> appointments = new HashSet<>();
+
+    public void addAppointment(Appointment appointment){
+        appointments.add(appointment);
+    }
+
+    public void removeAppointment(Appointment appointment){
+        appointments.remove(appointment);
+    }
+
     public void addPatientToDoctor(Patient patient)
     {
         patients.add(patient);
@@ -35,6 +49,8 @@ public class Doctor extends User implements Serializable{
     {
         return patients;
     }
+
+
 
 
 
