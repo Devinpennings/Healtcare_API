@@ -30,14 +30,14 @@ public class Doctor extends User implements Serializable{
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    private Set<Appointment> appointments = new HashSet<>();
+    private Set<TimeSlot> timeSlots = new HashSet<>();
 
-    public void addAppointment(Appointment appointment){
-        appointments.add(appointment);
+    public void addTimeSlot(TimeSlot timeSlot){
+        timeSlots.add(timeSlot);
     }
 
-    public void removeAppointment(Appointment appointment){
-        appointments.remove(appointment);
+    public void removeTimeSlot(TimeSlot timeSlot){
+        timeSlots.remove(timeSlot);
     }
 
     public void addPatientToDoctor(Patient patient)

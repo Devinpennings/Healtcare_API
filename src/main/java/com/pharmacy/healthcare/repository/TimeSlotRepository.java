@@ -1,0 +1,23 @@
+package com.pharmacy.healthcare.repository;
+
+
+import com.pharmacy.healthcare.domain.TimeSlot;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+
+@Repository
+public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
+    Collection<TimeSlot>findAll();
+    @Query(value = "SELECT * FROM timeslot a inner join users_appointments ua on a.id = ua.appointments_id\n" +
+            "inner join users u on ua.patient_user_id = u.user_id where u.user_id = 1 AND u.dtype = 'patient'", nativeQuery = true)
+    Collection<TimeSlot>findAllByPatientId(@Param("id") long id);
+    @Query(value = "SELECT * FROM timeslot a inner join users_appointments ua on a.id = ua.appointments_id\n" +
+            "inner join users u on ua.patient_user_id = u.user_id where u.user_id = 1 AND u.dtype = 'doctor'", nativeQuery = true)
+    Collection<TimeSlot> findAllByDoctorId(@Param("id") long id);
+
+
+}

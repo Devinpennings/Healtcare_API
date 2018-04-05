@@ -8,7 +8,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Properties;
@@ -36,7 +35,7 @@ public class Patient extends User implements Serializable {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    private Set<Appointment> appointments = new HashSet<>();
+    private Set<TimeSlot> timeSlots = new HashSet<>();
 
 
     public Long getAge() {
@@ -53,12 +52,12 @@ public class Patient extends User implements Serializable {
         System.out.println(diagnoses.toString());
     }
 
-    public void addAppointment(Appointment appointment){
-        appointments.add(appointment);
+    public void addTimeSlot(TimeSlot timeSlot){
+        timeSlots.add(timeSlot);
     }
 
-    public void removeAppointment(Appointment appointment){
-        appointments.remove(appointment);
+    public void removeTimeSlot(TimeSlot timeSlot){
+        timeSlots.remove(timeSlot);
     }
 
     public void removeDiagnosis(Diagnosis diagnosis)
