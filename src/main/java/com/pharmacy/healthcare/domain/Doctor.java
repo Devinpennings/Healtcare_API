@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,8 +33,14 @@ public class Doctor extends User implements Serializable{
     )
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
-    public void addTimeSlot(TimeSlot timeSlot){
-        timeSlots.add(timeSlot);
+//    public void addTimeSlot(TimeSlot timeSlot){
+//        timeSlots.add(timeSlot);
+//    }
+
+    public void addTimeSlotList(List<TimeSlot> timeSlots)
+    {
+        timeSlots.addAll(timeSlots);
+        System.out.println(timeSlots);
     }
 
     public void removeTimeSlot(TimeSlot timeSlot){

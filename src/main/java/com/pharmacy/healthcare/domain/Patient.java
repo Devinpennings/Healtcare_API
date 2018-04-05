@@ -19,7 +19,7 @@ public class Patient extends User implements Serializable {
     public Patient() {
     }
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     private Doctor doctor;
 
     @Column(name = "age", nullable = true)

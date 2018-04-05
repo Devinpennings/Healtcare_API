@@ -6,12 +6,19 @@ import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
+import com.pharmacy.healthcare.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
+@Service
 public class TimeSlotGenerator {
 
     private List<TimeSlot> timeSlots;
@@ -20,7 +27,8 @@ public class TimeSlotGenerator {
     TimeSlotRepository timeSlotRepository;
 
     @Autowired
-    UserRepository userRepository;
+    @Qualifier("doctorService")
+    private DoctorService doctorService;
 
 //    public List<TimeSlot> generateTimeSlots(int weeks){
 //        timeSlots = new ArrayList<>();
@@ -150,13 +158,7 @@ public class TimeSlotGenerator {
     }
 
     public void addTimeSlotsToDoctors(List<TimeSlot> timeSlotlist){
-        Collection<Doctor> doctors = userRepository.findAllDoctors();
-//        for(Doctor doctor: doctors){
-//            for(TimeSlot timeSlot: timeSlotlist){
-//                doctor.addTimeSlot(timeSlot);
-//            }
-//        }
-        userRepository.save(doctors);
+        doctorService.addTimeSlotsToDoctors(timeSlotlist);
     }
 
 

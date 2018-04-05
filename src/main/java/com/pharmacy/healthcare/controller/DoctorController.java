@@ -1,9 +1,11 @@
 package com.pharmacy.healthcare.controller;
 
 
+import com.pharmacy.healthcare.TimeSlotGenerator;
 import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.Doctor;
 import com.pharmacy.healthcare.domain.Patient;
+import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
@@ -13,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctors")
@@ -29,6 +34,9 @@ public class DoctorController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
@@ -89,4 +97,10 @@ public class DoctorController {
         }
     }
 
+    @PostConstruct
+    public void init()
+    {
+        List<TimeSlot> timeSlotList = timeSlotGenerator.generateTimeSlots(4, 9, 13, 10);
+        timeSlotGenerator.addTimeSlotsToDoctors(timeSlotList);
+    }
 }
