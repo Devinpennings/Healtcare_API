@@ -1,5 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.mail.*;
@@ -8,7 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Properties;
@@ -20,7 +21,7 @@ public class Patient extends User implements Serializable {
     public Patient() {
     }
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     private Doctor doctor;
 
     @Column(name = "age", nullable = true)
@@ -32,11 +33,19 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private TimeSlot timeSlot;
+
     public Long getAge() {
         return age;
     }
 
-     public void addDiagnosis(Diagnosis diagnosis)
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void addDiagnosis(Diagnosis diagnosis)
     {
         diagnoses.add(diagnosis);
         System.out.println(diagnoses.toString());
@@ -112,7 +121,7 @@ public class Patient extends User implements Serializable {
         InputStream input = null;
 
         try {
-            input = new FileInputStream(new File("WEB-INF/email.properties").getAbsolutePath());
+            input = new FileInputStream(new File("email.properties").getAbsolutePath());
 
             // load the mail properties file with cred
             prop.load(input);

@@ -1,9 +1,11 @@
 package com.pharmacy.healthcare.controller;
 
 
+import com.pharmacy.healthcare.TimeSlotGenerator;
 import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.Doctor;
 import com.pharmacy.healthcare.domain.Patient;
+import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
@@ -13,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/doctors")
@@ -48,21 +54,21 @@ public class DoctorController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> addPatientToDoctor(@PathVariable long id,  @Param("patient_id") long patient_id)
-    {
-        try {
-            Patient patient = patientRepository.findOne(patient_id);
-            Doctor doctor = doctorRepository.findOne(id);
-            doctor.addPatientToDoctor(patient);
-            doctorRepository.save(doctor);
-            return ResponseEntity.ok().build();
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+//    public ResponseEntity<?> addPatientToDoctor(@PathVariable long id,  @Param("patient_id") long patient_id)
+//    {
+//        try {
+//            Patient patient = patientRepository.findOne(patient_id);
+//            Doctor doctor = doctorRepository.findOne(id);
+//            doctor.addPatientToDoctor(patient);
+//            doctorRepository.save(doctor);
+//            return ResponseEntity.ok().build();
+//        }
+//        catch (Exception e)
+//        {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @RequestMapping(value =  "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getPatientsByDoctor(@PathVariable long id)
@@ -88,5 +94,4 @@ public class DoctorController {
             return new ResponseEntity<>(userRepository.save(doctor), HttpStatus.CREATED);
         }
     }
-
 }

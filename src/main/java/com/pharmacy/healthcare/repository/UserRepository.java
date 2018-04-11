@@ -1,9 +1,6 @@
 package com.pharmacy.healthcare.repository;
 
-import com.pharmacy.healthcare.domain.Patient;
-import com.pharmacy.healthcare.domain.TokenType;
-import com.pharmacy.healthcare.domain.User;
-import com.pharmacy.healthcare.domain.UserToken;
+import com.pharmacy.healthcare.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findAllByToken(@Param("token") String token);
     @Query(value = "select * from users where not dtype = 'patient' and not dtype = 'admin'", nativeQuery = true)
     Collection<User> findAllByType();
+    @Query(value = "select * from users where dtype = 'doctor'", nativeQuery = true)
+    Collection<Doctor> findAllDoctors();
 }

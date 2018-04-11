@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 public class OAuthModel implements Serializable {
 
-    private Long userId;
+    private Long user_id;
     private String firstname;
     private String lastname;
     private String username;
     private String type;
 
-    public OAuthModel(Long userId, String firstname, String lastname, String username, String type) {
-        this.userId = userId;
+    public OAuthModel(Long user_id, String firstname, String lastname, String username, String type) {
+        this.user_id = user_id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.type = type;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getUser_id() {
+        return user_id;
     }
 
     public String getFirstname() {
