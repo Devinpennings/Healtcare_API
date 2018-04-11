@@ -7,6 +7,7 @@ import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
@@ -26,6 +27,7 @@ import java.util.List;
 
 
 @SpringBootApplication
+@EnableAutoConfiguration
 public class ServletInitializer extends SpringBootServletInitializer {
 
 
