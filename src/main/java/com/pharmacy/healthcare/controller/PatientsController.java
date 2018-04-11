@@ -1,8 +1,10 @@
 package com.pharmacy.healthcare.controller;
 
 import com.pharmacy.healthcare.domain.Diagnosis;
+import com.pharmacy.healthcare.domain.Doctor;
 import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.User;
+import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.PatientService;
@@ -32,7 +34,7 @@ public class PatientsController {
 
     @Autowired
     @Qualifier("patientService")
-    PatientService diagnosesService;
+    PatientService patientService;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -70,7 +72,7 @@ public class PatientsController {
     {
         if (id != 0)
         {
-            return new ResponseEntity<>(diagnosesService.findAllByUserId(id), HttpStatus.OK);
+            return new ResponseEntity<>(patientService.findAllByUserId(id), HttpStatus.OK);
         }
         else
         {
@@ -78,17 +80,17 @@ public class PatientsController {
         }
     }
 
-    @RequestMapping(value = "/dossier/{userId}", method = RequestMethod.POST)
-    public ResponseEntity<?> setDiagnose(@PathVariable long userId, @RequestBody Diagnosis diagnosis)
+    @RequestMapping(value = "/dossier/{user_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> setDiagnose(@PathVariable long user_id, @RequestBody Diagnosis diagnosis)
     {
-        return new ResponseEntity<>(diagnosesService.save(diagnosis, userId), HttpStatus.CREATED);
+        return new ResponseEntity<>(patientService.save(diagnosis, user_id), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/dossier/diagnosis/{diagnosisId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId, @RequestParam long userid)
+    public ResponseEntity<?> deleteDiagnosis(@PathVariable long diagnosisId, @RequestParam long user_id)
     {
         try{
-            diagnosesService.deleteDiagnosis(userid , diagnosisId);
+            patientService.deleteDiagnosis(user_id , diagnosisId);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e)
@@ -97,11 +99,11 @@ public class PatientsController {
         }
     }
 
-    @RequestMapping(value = "/dossier/{userId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDossier(@PathVariable long userId)
+    @RequestMapping(value = "/dossier/{user_id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDossier(@PathVariable long user_id)
     {
         try {
-            diagnosesService.deleteDossier(userId);
+            patientService.deleteDossier(user_id);
             return ResponseEntity.noContent().build();
         }
         catch (ResourceNotFoundException e)
@@ -112,7 +114,7 @@ public class PatientsController {
   
     @RequestMapping(value = "/validate/{token}", method = RequestMethod.PUT)
     public ResponseEntity<?> validateUser(@PathVariable String token){
-        User user = diagnosesService.validateToken(token);
+        User user = patientService.validateToken(token);
         if(user!=null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -122,7 +124,7 @@ public class PatientsController {
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT)
     public ResponseEntity<?> enableUser(@PathVariable String token, @Param("password") String password)
     {
-        User user = diagnosesService.validateToken(token);
+        User user = patientService.validateToken(token);
         if (user != null)
         {
             user.setPassword(passwordEncoder.encode(password));
@@ -133,8 +135,8 @@ public class PatientsController {
         return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addPatient(@RequestBody Patient patient){
-        return new ResponseEntity<>(diagnosesService.save(patient), HttpStatus.CREATED);
+    @RequestMapping(value = "/{doctor_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> addPatient(@PathVariable long doctor_id, @RequestBody Patient patient){
+        return new ResponseEntity<>(patientService.save(patient, doctor_id), HttpStatus.CREATED);
     }
 }

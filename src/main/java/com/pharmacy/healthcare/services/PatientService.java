@@ -1,10 +1,7 @@
 package com.pharmacy.healthcare.services;
 
 import com.pharmacy.healthcare.domain.*;
-import com.pharmacy.healthcare.repository.DiagnosesRepository;
-import com.pharmacy.healthcare.repository.PatientRepository;
-import com.pharmacy.healthcare.repository.TokenRepository;
-import com.pharmacy.healthcare.repository.UserRepository;
+import com.pharmacy.healthcare.repository.*;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,9 @@ public class PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    DoctorRepository doctorRepository;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -55,8 +55,11 @@ public class PatientService {
         patientRepository.save(p);
     }
 
-    public Patient save(Patient patient){
+    public Patient save(Patient patient, long doctor_id){
+        Doctor doctor = doctorRepository.findOne(doctor_id);
         Patient p = patientRepository.save(patient);
+        doctor.addPatientToDoctor(p);
+        doctorRepository.save(doctor);
         if (p != null){
             UserToken userToken = new UserToken(generateRandomToken(10), getActivationExpireDate(), TokenType.ACTIVATION, false, p);
             p.addToken(userToken);

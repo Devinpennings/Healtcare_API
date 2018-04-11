@@ -7,6 +7,12 @@ import com.pharmacy.healthcare.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class TimeSlotService {
 
@@ -39,6 +45,17 @@ public class TimeSlotService {
 //            return null;
 //        }
         return null;
+    }
+
+    public Set<TimeSlot> getTimeSlots()
+    {
+        Set<TimeSlot> timeSlots = new HashSet<>();
+        Iterable<Doctor> doctors = doctorRepository.findAll();
+        for (Doctor doc: doctors
+             ) {
+            timeSlots.addAll(doc.getTimeSlots());
+        }
+        return timeSlots;
     }
 
 

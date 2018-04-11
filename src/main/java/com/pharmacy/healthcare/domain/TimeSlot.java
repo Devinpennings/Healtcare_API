@@ -28,9 +28,15 @@ public class TimeSlot implements Serializable {
     @Column(name = "available", nullable = false)
     private Boolean available = true;
 
-//    @OneToOne
-//    @JoinColumn(name = "medicalCompany")
-//    private MedicalCompany medicalCompany;
+    @Column(name = "approval", nullable = false)
+    private Boolean approval = false;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Doctor doctor;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_user_id")
+    private Patient patient;
 
 
     public TimeSlot(java.util.Date startTime, java.util.Date endTime, String note, Boolean available) {
@@ -38,6 +44,7 @@ public class TimeSlot implements Serializable {
         this.endTime = endTime;
         this.note = note;
         this.available = available;
+        this.approval = false;
     }
 
     public java.util.Date getStartTime() {
@@ -54,6 +61,10 @@ public class TimeSlot implements Serializable {
 
     public void setEndTime(java.util.Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Patient getPatient() {
+        return patient;
     }
 
     public TimeSlot(){

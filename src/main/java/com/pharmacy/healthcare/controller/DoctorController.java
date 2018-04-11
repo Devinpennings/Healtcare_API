@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/doctors")
@@ -34,9 +35,6 @@ public class DoctorController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
@@ -56,21 +54,21 @@ public class DoctorController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> addPatientToDoctor(@PathVariable long id,  @Param("patient_id") long patient_id)
-    {
-        try {
-            Patient patient = patientRepository.findOne(patient_id);
-            Doctor doctor = doctorRepository.findOne(id);
-            doctor.addPatientToDoctor(patient);
-            doctorRepository.save(doctor);
-            return ResponseEntity.ok().build();
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+//    public ResponseEntity<?> addPatientToDoctor(@PathVariable long id,  @Param("patient_id") long patient_id)
+//    {
+//        try {
+//            Patient patient = patientRepository.findOne(patient_id);
+//            Doctor doctor = doctorRepository.findOne(id);
+//            doctor.addPatientToDoctor(patient);
+//            doctorRepository.save(doctor);
+//            return ResponseEntity.ok().build();
+//        }
+//        catch (Exception e)
+//        {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @RequestMapping(value =  "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getPatientsByDoctor(@PathVariable long id)
@@ -95,12 +93,5 @@ public class DoctorController {
             doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
             return new ResponseEntity<>(userRepository.save(doctor), HttpStatus.CREATED);
         }
-    }
-
-    @PostConstruct
-    public void init()
-    {
-        List<TimeSlot> timeSlotList = timeSlotGenerator.generateTimeSlots(4, 9, 13, 10);
-        timeSlotGenerator.addTimeSlotsToDoctors(timeSlotList);
     }
 }

@@ -1,12 +1,15 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @DiscriminatorValue("doctor")
@@ -31,16 +34,18 @@ public class Doctor extends User implements Serializable{
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
+    @OrderBy("id")
+    @Where(clause = "starttime >= CURRENT_TIMESTAMP")
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
-//    public void addTimeSlot(TimeSlot timeSlot){
-//        timeSlots.add(timeSlot);
-//    }
-
-    public void addTimeSlotList(List<TimeSlot> timeSlots)
+    public void addTimeSlotList(Set<TimeSlot> timeSlots)
     {
-        timeSlots.addAll(timeSlots);
+        this.timeSlots = timeSlots;
         System.out.println(timeSlots);
+    }
+
+    public Set<TimeSlot> getTimeSlots() {
+        return timeSlots;
     }
 
     public void removeTimeSlot(TimeSlot timeSlot){
@@ -56,9 +61,4 @@ public class Doctor extends User implements Serializable{
     {
         return patients;
     }
-
-
-
-
-
 }
