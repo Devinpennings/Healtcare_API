@@ -15,8 +15,4 @@ public class Admin extends User implements Serializable {
     public String getType() {
         return "admin";
     }
-
-
-
-
 }
