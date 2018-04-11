@@ -16,11 +16,17 @@ public class Diagnosis implements Serializable {
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
 
+//    @Column(name = "category", nullable = false)
+//    private byte[] category;
+//
+//    @Column(name = "report", nullable = false)
+//    private byte[] report;
+
     @Column(name = "category", nullable = false)
-    private byte[] category;
+    private String category;
 
     @Column(name = "report", nullable = false)
-    private byte[] report;
+    private String report;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -41,20 +47,37 @@ public class Diagnosis implements Serializable {
         this.date = date;
     }
 
-    public String getCategory() throws GeneralSecurityException {
-        return EncryptionUtil.decrypt(category);
+//    public String getCategory() throws GeneralSecurityException {
+//        return EncryptionUtil.decrypt(category);
+//    }
+//
+//    public void setCategory(String category) throws GeneralSecurityException {
+//        this.category = EncryptionUtil.encrypt(category);
+//    }
+//
+//    public String getReport() throws GeneralSecurityException {
+//        return EncryptionUtil.decrypt(report);
+//    }
+//
+//    public void setReport(String report) throws GeneralSecurityException {
+//        this.report = EncryptionUtil.encrypt(report);
+//    }
+
+
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategory(String category) throws GeneralSecurityException {
-        this.category = EncryptionUtil.encrypt(category);
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getReport() throws GeneralSecurityException {
-        return EncryptionUtil.decrypt(report);
+    public String getReport() {
+        return report;
     }
 
-    public void setReport(String report) throws GeneralSecurityException {
-        this.report = EncryptionUtil.encrypt(report);
+    public void setReport(String report) {
+        this.report = report;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.pharmacy.healthcare;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pharmacy.healthcare.domain.Doctor;
 import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
@@ -13,10 +16,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import javax.annotation.PostConstruct;
 import java.sql.Time;
@@ -30,11 +35,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class ServletInitializer extends SpringBootServletInitializer {
 
-
-
-//    TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
-
-
     public static void main(String[] args) {
         SpringApplication.run(ServletInitializer.class, args);
     }
@@ -44,19 +44,12 @@ public class ServletInitializer extends SpringBootServletInitializer {
         return application.sources(ServletInitializer.class);
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void addTimeSlotsToDoctors() {
-//        List<TimeSlot> timeSlotList = timeSlotGenerator.generateTimeSlots(4, 9, 13, 10);
-//        timeSlotGenerator.addTimeSlotsToDoctors(timeSlotList);
-//    }
-
-
-
-
-
-
-
-
-
-
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        MappingJackson2HttpMessageConverter converter =
+                new MappingJackson2HttpMessageConverter(mapper);
+        return converter;
+    }
 }

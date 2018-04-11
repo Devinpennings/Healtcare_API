@@ -10,6 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.*;
 import java.io.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Properties;
@@ -22,10 +23,17 @@ public class Patient extends User implements Serializable {
     }
 
     @ManyToOne(fetch=FetchType.LAZY)
-    private Doctor doctor;
+    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    private Doctor mappedDoctor;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    public Doctor getDoctor() {
+        return mappedDoctor;
+    }
 
     @Column(name = "age", nullable = true)
-    protected Long age;
+    protected Date age;
 
     @OneToMany(
             orphanRemoval = true,
@@ -33,16 +41,16 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
-    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-    private TimeSlot timeSlot;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "timeslot_id" ,referencedColumnName="id")
+    private TimeSlot mappedTimeSlot;
 
-    public Long getAge() {
+    public Date getAge() {
         return age;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
+    public void setMappedDoctor(Doctor mappedDoctor) {
+        this.mappedDoctor = mappedDoctor;
     }
 
     public void addDiagnosis(Diagnosis diagnosis)
@@ -61,7 +69,7 @@ public class Patient extends User implements Serializable {
         diagnoses.clear();
     }
 
-    public void setAge(Long age) {
+    public void setAge(Date age) {
         this.age = age;
     }
 

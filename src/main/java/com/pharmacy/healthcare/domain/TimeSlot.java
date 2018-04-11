@@ -2,10 +2,6 @@ package com.pharmacy.healthcare.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "timeslot")
@@ -32,12 +28,25 @@ public class TimeSlot implements Serializable {
     private Boolean approval = false;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    private Doctor doctor;
+    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    private Doctor mappedDoctor;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_user_id")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "mappedTimeSlot")
     private Patient patient;
 
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    public Doctor getMappedDoctor() {
+        return mappedDoctor;
+    }
+
+    public void setMappedDoctor(Doctor mappedDoctor) {
+        this.mappedDoctor = mappedDoctor;
+    }
 
     public TimeSlot(java.util.Date startTime, java.util.Date endTime, String note, Boolean available) {
         this.startTime = startTime;
@@ -67,9 +76,7 @@ public class TimeSlot implements Serializable {
         return patient;
     }
 
-    public TimeSlot(){
-
-    }
+    public TimeSlot(){}
 
     public Boolean getAvailable() {
         return available;

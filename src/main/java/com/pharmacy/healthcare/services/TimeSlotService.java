@@ -7,11 +7,10 @@ import com.pharmacy.healthcare.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TimeSlotService {
@@ -50,12 +49,21 @@ public class TimeSlotService {
     public Set<TimeSlot> getTimeSlots()
     {
         Set<TimeSlot> timeSlots = new HashSet<>();
+        Set<TimeSlot> timeSlots1 = new HashSet<>();
         Iterable<Doctor> doctors = doctorRepository.findAll();
         for (Doctor doc: doctors
              ) {
             timeSlots.addAll(doc.getTimeSlots());
         }
         return timeSlots;
+    }
+
+    public void reserveTimeSlot(long user_id, long doctor_id, String date)
+    {
+        Date starttime = new Date(Long.parseLong(date));
+        TimeSlot timeSlot = timeSlotRepository.findTimeSlotByStartTime(starttime, doctor_id);
+        timeSlot.setPatient(patientRepository.findOne(user_id));
+        timeSlotRepository.save(timeSlot);
     }
 
 

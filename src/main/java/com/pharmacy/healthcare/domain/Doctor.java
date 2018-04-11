@@ -1,11 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,13 +22,18 @@ public class Doctor extends User implements Serializable{
     @JsonIgnore
     @OneToMany(
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            mappedBy = "mappedDoctor",
+            fetch = FetchType.LAZY
     )
     private Set<Patient> patients = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            mappedBy = "mappedDoctor",
+            fetch = FetchType.EAGER
     )
     @OrderBy("id")
     @Where(clause = "starttime >= CURRENT_TIMESTAMP")
@@ -40,8 +41,14 @@ public class Doctor extends User implements Serializable{
 
     public void addTimeSlotList(Set<TimeSlot> timeSlots)
     {
-        this.timeSlots = timeSlots;
-        System.out.println(timeSlots);
+        for (TimeSlot t: timeSlots
+             ) {
+            this.timeSlots.add(t);
+            if (t.getMappedDoctor() != this)
+            {
+                t.setMappedDoctor(this);
+            }
+        }
     }
 
     public Set<TimeSlot> getTimeSlots() {
@@ -55,6 +62,10 @@ public class Doctor extends User implements Serializable{
     public void addPatientToDoctor(Patient patient)
     {
         patients.add(patient);
+        if(patient.getDoctor() != this)
+        {
+            patient.setMappedDoctor(this);
+        }
     }
 
     public Set<Patient> getPatients()
