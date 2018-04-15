@@ -62,7 +62,7 @@ public class TimeSlotService {
     {
         Date starttime = new Date(Long.parseLong(date));
         TimeSlot timeSlot = timeSlotRepository.findTimeSlotByStartTime(starttime, doctor_id);
-        timeSlot.setPatient(patientRepository.findOne(user_id));
+        timeSlot.setMappedPatient(patientRepository.findOne(user_id));
         timeSlotRepository.save(timeSlot);
     }
 

@@ -1,5 +1,7 @@
 package com.pharmacy.healthcare.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -27,25 +29,37 @@ public class TimeSlot implements Serializable {
     @Column(name = "approval", nullable = false)
     private Boolean approval = false;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctors_user_id", referencedColumnName = "user_id")
     private Doctor mappedDoctor;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "mappedTimeSlot")
-    private Patient patient;
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctors_user_id", referencedColumnName = "user_id")
     public Doctor getMappedDoctor() {
         return mappedDoctor;
     }
 
     public void setMappedDoctor(Doctor mappedDoctor) {
         this.mappedDoctor = mappedDoctor;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patients_user_id", referencedColumnName = "user_id")
+    private Patient mappedPatient;
+
+    public void setMappedPatient(Patient mappedPatient) {
+        this.mappedPatient = mappedPatient;
+        if (mappedPatient.getTimeSlots().contains(this))
+        {
+            mappedPatient.setMappedTimeSlot(this);
+        }
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patients_user_id", referencedColumnName = "user_id")
+    public Patient getMappedPatient() {
+        return mappedPatient;
     }
 
     public TimeSlot(java.util.Date startTime, java.util.Date endTime, String note, Boolean available) {
@@ -72,11 +86,8 @@ public class TimeSlot implements Serializable {
         this.endTime = endTime;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public TimeSlot() {
     }
-
-    public TimeSlot(){}
 
     public Boolean getAvailable() {
         return available;
