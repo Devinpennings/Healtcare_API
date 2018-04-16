@@ -1,5 +1,6 @@
 package com.pharmacy.healthcare.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.core.io.ClassPathResource;
@@ -41,9 +42,20 @@ public class Patient extends User implements Serializable {
     )
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            mappedBy = "mappedPatient",
+            fetch = FetchType.LAZY
+    )
+    private Set<TimeSlot> timeSlots = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "timeslot_id" ,referencedColumnName="id")
-    private TimeSlot mappedTimeSlot;
+    public Set<TimeSlot> getTimeSlots() {
+        return timeSlots;
+    }
 
     public Date getAge() {
         return age;
@@ -53,10 +65,17 @@ public class Patient extends User implements Serializable {
         this.mappedDoctor = mappedDoctor;
     }
 
+    public void setMappedTimeSlot(TimeSlot timeSlot) {
+        timeSlots.add(timeSlot);
+        if (timeSlot.getMappedPatient() != this)
+        {
+            timeSlot.setMappedPatient(this);
+        }
+    }
+
     public void addDiagnosis(Diagnosis diagnosis)
     {
         diagnoses.add(diagnosis);
-        System.out.println(diagnoses.toString());
     }
 
     public void removeDiagnosis(Diagnosis diagnosis)
