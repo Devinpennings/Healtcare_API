@@ -94,4 +94,24 @@ public class TimeSlotController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @RequestMapping(value = "/approve/{timeslot_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> approveTimeSlot(@PathVariable long timeslot_id, @RequestParam(value = "approval") Boolean approval)
+    {
+        try {
+            if (approval)
+            {
+                timeSlotService.approveTimeSlot(timeslot_id);
+                return ResponseEntity.ok().build();
+            }
+            else {
+                timeSlotService.disapproveTimeSlot(timeslot_id);
+                return ResponseEntity.ok().build();
+            }
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

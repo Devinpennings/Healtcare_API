@@ -76,6 +76,20 @@ public class TimeSlotService {
         timeSlotRepository.save(timeSlot);
     }
 
+    public void approveTimeSlot(long timeslot_id)
+    {
+        TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
+        timeSlot.setApproval(true);
+        timeSlotRepository.save(timeSlot);
+    }
+
+    public void disapproveTimeSlot(long timeslot_id)
+    {
+        TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
+        timeSlot.setApproval(false);
+        timeSlotRepository.save(timeSlot);
+    }
+
 
 
 }
