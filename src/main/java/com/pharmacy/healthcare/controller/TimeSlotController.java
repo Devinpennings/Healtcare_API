@@ -19,6 +19,7 @@ import sun.misc.Request;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -43,16 +44,30 @@ public class TimeSlotController {
     @PostConstruct
     public void init()
     {
-        Set<TimeSlot> timeSlotList = timeSlotGenerator.generateTimeSlots(2, 9, 10, 10);
+        Set<TimeSlot> timeSlotList = timeSlotGenerator.generateTimeSlots(1, 9, 10, 10);
         timeSlotGenerator.addTimeSlotsToDoctors(timeSlotList);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getTimeSlots()
+    public ResponseEntity<?> getTimeSlots(@RequestParam(value = "availability", required = false, defaultValue = "2") int availability)
     {
         try
         {
-            return new ResponseEntity<>(timeSlotService.getTimeSlots(), HttpStatus.OK);
+            if (availability == 2) {
+                return new ResponseEntity<>(timeSlotService.getTimeSlots(), HttpStatus.OK);
+            }else{
+                Set<TimeSlot> returnSet = new HashSet<>();
+
+                for (TimeSlot ts : timeSlotService.getTimeSlots()) {
+                    if(ts.getAvailable() == (availability != 0)){
+
+                        returnSet.add(ts);
+
+                    }
+                }
+
+                return new ResponseEntity<>(returnSet, HttpStatus.OK);
+            }
         }
         catch (Exception e)
         {
@@ -67,9 +82,16 @@ public class TimeSlotController {
         return ResponseEntity.ok().build();
     }
 
-
-
-
-
-
+    @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> clearTimeSlot(@PathVariable long timeslot_id)
+    {
+        try {
+            timeSlotService.clearTimeSlot(timeslot_id);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

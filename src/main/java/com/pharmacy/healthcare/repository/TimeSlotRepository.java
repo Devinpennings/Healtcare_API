@@ -21,5 +21,4 @@ public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
     Collection<TimeSlot> findAllByDoctorId(@Param("id") long id);
     @Query(value = "SELECT * FROM timeslot t WHERE t.doctors_user_id = :doctor_id AND t.starttime = :starttime", nativeQuery = true)
     TimeSlot findTimeSlotByStartTime(@Param("starttime")Date starttime, @Param("doctor_id")long doctor_id);
-
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -63,6 +64,15 @@ public class TimeSlotService {
         Date starttime = new Date(Long.parseLong(date));
         TimeSlot timeSlot = timeSlotRepository.findTimeSlotByStartTime(starttime, doctor_id);
         timeSlot.setMappedPatient(patientRepository.findOne(user_id));
+        timeSlot.setAvailable(false);
+        timeSlotRepository.save(timeSlot);
+    }
+
+    public void clearTimeSlot(long timeslot_id)
+    {
+        TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
+        timeSlot.removeMappedPatient();
+        timeSlot.setAvailable(true);
         timeSlotRepository.save(timeSlot);
     }
 

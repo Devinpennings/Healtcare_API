@@ -73,6 +73,11 @@ public class Patient extends User implements Serializable {
         }
     }
 
+//    public void removeMappedTimeSlot(TimeSlot timeSlot)
+//    {
+//        this.timeSlots.remove(timeSlot);
+//    }
+
     public void addDiagnosis(Diagnosis diagnosis)
     {
         diagnoses.add(diagnosis);
@@ -112,6 +117,16 @@ public class Patient extends User implements Serializable {
         //todo change template add date and name
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html"));
+    }
+
+    public void sendAppointmentCancelMail(Patient patient){
+        String[] to = {patient.getUsername()};
+        String email = createHtmlStringBody("cancelEmail.html");
+        email = email.replaceAll("USERNAME", patient.getFirstname());
+        email = email.replaceAll("AFSPRAAK", "Uw afspraak met dr. " + patient.mappedDoctor.getLastname() + " is afgezegd vanwege een dubbele afspraak van uw huisarts. Excuses voor het ongemak");
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Uw afspraak is afgezegd.", email);
+
+
     }
 
 
