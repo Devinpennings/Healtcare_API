@@ -8,6 +8,7 @@ import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
+import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +34,9 @@ public class DoctorController {
 
     @Autowired
     DoctorRepository doctorRepository;
+
+    @Autowired
+    TimeSlotRepository timeSlotRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -93,5 +98,47 @@ public class DoctorController {
             doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
             return new ResponseEntity<>(userRepository.save(doctor), HttpStatus.CREATED);
         }
+    }
+
+    @RequestMapping(value = "requestSubtitude/{id}", method = RequestMethod.POST)
+    public ResponseEntity<?> requestSubtitude(@PathVariable("id") long requestId,
+                                              @RequestParam(value = "subtitudeId") long pSubtitudeId,
+                                              @RequestParam(value = "startTime") String pStartTime,
+                                              @RequestParam(value = "endTime") String pEndTime){
+
+        Date startTime;
+        Date endTime;
+
+        try{
+            startTime = new Date(Long.parseLong(pStartTime));
+            endTime = new Date(Long.parseLong(pEndTime));
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Doctor doctor = doctorRepository.findOne(requestId);
+        Doctor subtitude = doctorRepository.findOne(pSubtitudeId);
+
+        for(TimeSlot ts : doctor.getTimeSlots(startTime, endTime)){
+
+            if(subtitude.isAvailable(ts.getStartTime()) && subtitude.isAvailable(ts.getEndTime())){
+                for(TimeSlot sts : subtitude.getTimeSlots(ts.getStartTime(), ts.getEndTime())){
+                    sts.setMappedDoctor(null);
+                    sts.setAvailable(true);
+                    timeSlotRepository.save(sts);
+                }
+
+                ts.setMappedDoctor(subtitude);
+                ts.setAvailable(false);
+            }else{
+                ts.setDoctorAvailable(false);
+                ts.getMappedPatient().sendAppointmentCancelMail(ts.getMappedPatient());
+            }
+            timeSlotRepository.save(ts);
+
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }
