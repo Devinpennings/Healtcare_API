@@ -85,7 +85,6 @@ public class DoctorController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) {
-
         if (doctor == null) {
             return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
         } else {

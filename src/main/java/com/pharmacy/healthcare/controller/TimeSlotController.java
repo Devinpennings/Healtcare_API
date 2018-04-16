@@ -67,9 +67,16 @@ public class TimeSlotController {
         return ResponseEntity.ok().build();
     }
 
-
-
-
-
-
+    @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> clearTimeSlot(@PathVariable long timeslot_id)
+    {
+        try {
+            timeSlotService.clearTimeSlot(timeslot_id);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.noContent().build();
+        }
+    }
 }

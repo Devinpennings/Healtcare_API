@@ -33,7 +33,6 @@ public class TimeSlot implements Serializable {
     @JoinColumn(name = "doctors_user_id", referencedColumnName = "user_id")
     private Doctor mappedDoctor;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctors_user_id", referencedColumnName = "user_id")
     public Doctor getMappedDoctor() {
@@ -54,6 +53,15 @@ public class TimeSlot implements Serializable {
         {
             mappedPatient.setMappedTimeSlot(this);
         }
+    }
+
+    public void removeMappedPatient()
+    {
+//        if (this.mappedPatient.getTimeSlots().contains(this))
+//        {
+//            this.mappedPatient.removeMappedTimeSlot(this);
+//        }
+        this.mappedPatient = null;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -89,10 +97,6 @@ public class TimeSlot implements Serializable {
     public TimeSlot() {
     }
 
-    public Boolean getAvailable() {
-        return available;
-    }
-
     public long getId() {
         return id;
     }
@@ -103,5 +107,21 @@ public class TimeSlot implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Boolean getApproval() {
+        return approval;
+    }
+
+    public void setApproval(Boolean approval) {
+        this.approval = approval;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }

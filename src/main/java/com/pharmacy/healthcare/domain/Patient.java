@@ -73,6 +73,11 @@ public class Patient extends User implements Serializable {
         }
     }
 
+//    public void removeMappedTimeSlot(TimeSlot timeSlot)
+//    {
+//        this.timeSlots.remove(timeSlot);
+//    }
+
     public void addDiagnosis(Diagnosis diagnosis)
     {
         diagnoses.add(diagnosis);
