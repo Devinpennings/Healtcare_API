@@ -119,6 +119,16 @@ public class Patient extends User implements Serializable {
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html"));
     }
 
+    public void sendAppointmentCancelMail(Patient patient){
+        String[] to = {patient.getUsername()};
+        String email = createHtmlStringBody("cancelEmail.html");
+        email = email.replaceAll("USERNAME", patient.getFirstname());
+        email = email.replaceAll("AFSPRAAK", "Uw afspraak met dr. " + patient.mappedDoctor.getLastname() + " is afgezegd vanwege een dubbele afspraak van uw huisarts. Excuses voor het ongemak");
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Uw afspraak is afgezegd.", email);
+
+
+    }
+
 
     public void sendActivationMail(Patient patient) {
         //todo maak de placeholders in de html en user moet naam en achternaam krijgen

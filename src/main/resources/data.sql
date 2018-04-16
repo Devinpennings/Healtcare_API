@@ -1,6 +1,7 @@
 INSERT INTO users (dtype, username  , password, enabled, age, lastname, firstname) VALUES
 	('doctor', 'sanderklijsen@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'klijsen', 'sander'),
-('patient', 'devinpennings@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'pennings', 'devin'),
+	('doctor', 'timkurvers@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'kurvers', 'tim'),
+  ('patient', 'devinpennings@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'pennings', 'devin'),
  	('patient',  'daveyvandenbogaard@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'bogaard', 'davey'),
  	('admin',  'stefangies@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'gies', 'stefan'),
  	('admin',  'ottonaus@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'naus', 'otto'),
