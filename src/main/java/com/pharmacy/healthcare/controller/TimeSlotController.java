@@ -76,9 +76,9 @@ public class TimeSlotController {
     }
 
     @RequestMapping(value = "/{doctor_id}", method = RequestMethod.POST)
-    public ResponseEntity<?> addTimeSlot(@PathVariable long doctor_id, @RequestParam(value = "userid") long userid, @RequestParam(value = "starttime") String starttime)
+    public ResponseEntity<?> addTimeSlot(@PathVariable long doctor_id, @RequestParam(value = "user_id") long user_id, @RequestParam(value = "starttime") String starttime)
     {
-        timeSlotService.reserveTimeSlot(userid, doctor_id, starttime);
+        timeSlotService.reserveTimeSlot(user_id, doctor_id, starttime);
         return ResponseEntity.ok().build();
     }
 

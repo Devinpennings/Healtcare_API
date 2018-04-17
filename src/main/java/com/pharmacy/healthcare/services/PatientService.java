@@ -28,9 +28,9 @@ public class PatientService {
     @Autowired
     private UserRepository userRepository;
 
-    public Collection<Diagnosis> findAllByUserId(long userid)
+    public Collection<Diagnosis> findAllByUserId(long user_id)
     {
-        return diagnosisRepository.findAllByUserId(userid);
+        return diagnosisRepository.findAllByUserId(user_id);
     }
 
     public Patient save(Diagnosis diagnosis, long user_id)
@@ -41,16 +41,16 @@ public class PatientService {
         return patient;
     }
 
-    public void deleteDiagnosis(long userid, long id)
+    public void deleteDiagnosis(long user_id, long id)
     {
-        Patient p = patientRepository.findOne(userid);
+        Patient p = patientRepository.findOne(user_id);
         p.removeDiagnosis(diagnosisRepository.findDiagnosesById(id));
         patientRepository.save(p);
     }
 
-    public void deleteDossier(long userid)
+    public void deleteDossier(long user_id)
     {
-        Patient p = patientRepository.findOne(userid);
+        Patient p = patientRepository.findOne(user_id);
         p.removeAllDiagnoses();
         patientRepository.save(p);
     }
