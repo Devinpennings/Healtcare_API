@@ -1,26 +1,18 @@
 package com.pharmacy.healthcare.controller;
 
-
-import com.pharmacy.healthcare.TimeSlotGenerator;
-import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.Doctor;
-import com.pharmacy.healthcare.domain.Patient;
-import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
-import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
+import com.pharmacy.healthcare.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/doctors")
@@ -30,7 +22,7 @@ public class DoctorController {
     UserRepository userRepository;
 
     @Autowired
-    PatientRepository patientRepository;
+    DoctorService doctorService;
 
     @Autowired
     DoctorRepository doctorRepository;
@@ -41,49 +33,31 @@ public class DoctorController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
-                                           @RequestBody Doctor doctor){
-        Doctor currentUser = (Doctor) userRepository.findOne(id);
+                                           @RequestBody Doctor doctor) {
+        return new ResponseEntity<>(doctorService.updateDoctor(id, doctor), HttpStatus.OK);
+    }
 
-        if (currentUser == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else{
-            currentUser.setUsername(doctor.getUsername());
-            currentUser.setFirstname(doctor.getFirstname());
-            currentUser.setLastname(doctor.getLastname());
-
-            userRepository.save(currentUser);
-            return new ResponseEntity<Doctor>(currentUser, HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getAllDoctors(@RequestParam(value = "doctor_id", required = false, defaultValue = "0") long doctor_id) {
+        try {
+            if (doctor_id != 0) {
+                return new ResponseEntity<>(doctorRepository.findOne(doctor_id), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(userRepository.findAllByDoctorType(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
-//    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-//    public ResponseEntity<?> addPatientToDoctor(@PathVariable long id,  @Param("patient_id") long patient_id)
-//    {
-//        try {
-//            Patient patient = patientRepository.findOne(patient_id);
-//            Doctor doctor = doctorRepository.findOne(id);
-//            doctor.addPatientToDoctor(patient);
-//            doctorRepository.save(doctor);
-//            return ResponseEntity.ok().build();
-//        }
-//        catch (Exception e)
-//        {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
-    @RequestMapping(value =  "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getPatientsByDoctor(@PathVariable long id)
-    {
+    @RequestMapping(method = RequestMethod.GET, value = "/patients/{doctor_id}")
+    public ResponseEntity<?> getAllPatientsByDoctorId(@RequestParam(value = "doctor_id") long doctor_id) {
         try {
-            Doctor doctor = doctorRepository.findOne(id);
+            Doctor doctor = doctorRepository.findOne(doctor_id);
             return new ResponseEntity<>(doctor.getPatients(), HttpStatus.OK);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -103,41 +77,9 @@ public class DoctorController {
     public ResponseEntity<?> requestSubtitude(@PathVariable("id") long requestId,
                                               @RequestParam(value = "subtitudeId") long pSubtitudeId,
                                               @RequestParam(value = "startTime") String pStartTime,
-                                              @RequestParam(value = "endTime") String pEndTime){
-
-        Date startTime;
-        Date endTime;
-
-        try{
-            startTime = new Date(Long.parseLong(pStartTime));
-            endTime = new Date(Long.parseLong(pEndTime));
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Doctor doctor = doctorRepository.findOne(requestId);
-        Doctor subtitude = doctorRepository.findOne(pSubtitudeId);
-
-        for(TimeSlot ts : doctor.getTimeSlots(startTime, endTime)){
-
-            if(subtitude.isAvailable(ts.getStartTime()) && subtitude.isAvailable(ts.getEndTime())){
-                for(TimeSlot sts : subtitude.getTimeSlots(ts.getStartTime(), ts.getEndTime())){
-                    sts.setMappedDoctor(null);
-                    sts.setAvailable(true);
-                    timeSlotRepository.save(sts);
-                }
-
-                ts.setMappedDoctor(subtitude);
-                ts.setAvailable(false);
-            }else{
-                ts.setDoctorAvailable(false);
-                ts.getMappedPatient().sendAppointmentCancelMail(ts.getMappedPatient());
-            }
-            timeSlotRepository.save(ts);
-
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-
+                                              @RequestParam(value = "endTime") String pEndTime) {
+        if (doctorService.requestSubtitude(requestId, pSubtitudeId, pStartTime, pEndTime)) {
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.notFound().build();
     }
 }

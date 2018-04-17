@@ -25,32 +25,9 @@ public class TimeSlotService {
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 
-    public TimeSlot save(TimeSlot timeSlot, long patientId, long doctorId) {
-//        if (timeSlot != null && doctorId == -1) {
-//            Patient patient = patientRepository.findOne(patientId);
-//            Doctor doctor = patient.getDoctor();
-//            patient.addAppointment(timeSlot);
-//            doctor.addAppointment(timeSlot);
-//            patientRepository.save(patient);
-//            doctorRepository.save(doctor);
-//            return timeSlot;
-//        } else if (timeSlot != null && doctorId != -1) {
-//            Patient patient = patientRepository.findOne(patientId);
-//            Doctor doctor = doctorRepository.findOne(doctorId);
-//            patient.addAppointment(timeSlot);
-//            doctor.addAppointment(timeSlot);
-//            patientRepository.save(patient);
-//            doctorRepository.save(doctor);
-//        } else {
-//            return null;
-//        }
-        return null;
-    }
-
     public Set<TimeSlot> getTimeSlots()
     {
         Set<TimeSlot> timeSlots = new HashSet<>();
-        Set<TimeSlot> timeSlots1 = new HashSet<>();
         Iterable<Doctor> doctors = doctorRepository.findAll();
         for (Doctor doc: doctors
              ) {

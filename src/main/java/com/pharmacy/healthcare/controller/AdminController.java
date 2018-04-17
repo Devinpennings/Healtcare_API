@@ -25,10 +25,4 @@ public class AdminController {
                                         @RequestBody Admin admin){
             return new ResponseEntity<>(adminService.updateUser(id, admin), HttpStatus.OK);
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllEmployees()
-    {
-        return new ResponseEntity<>(userRepository.findAllByType(), HttpStatus.OK);
-    }
 }
