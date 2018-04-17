@@ -75,11 +75,36 @@ public class TimeSlotController {
         }
     }
 
-    @RequestMapping(value = "/{doctor_id}", method = RequestMethod.POST)
-    public ResponseEntity<?> addTimeSlot(@PathVariable long doctor_id, @RequestParam(value = "user_id") long user_id, @RequestParam(value = "starttime") String starttime)
+    @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> addTimeSlot(@PathVariable long timeslot_id, @RequestParam(value = "user_id") long user_id)
     {
-        timeSlotService.reserveTimeSlot(user_id, doctor_id, starttime);
+        timeSlotService.reserveTimeSlot(timeslot_id, user_id);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{doctor_id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getDoctorAppointments(@PathVariable long doctor_id, @RequestParam(value = "approval", required = false, defaultValue = "2") int approval){
+        try{
+            if (approval == 2) {
+                return new ResponseEntity<Object>( timeSlotRepository.findAllByDoctorId(doctor_id), HttpStatus.OK);
+            }
+            else{
+                Set<TimeSlot> returnSet = new HashSet<>();
+
+                for (TimeSlot ts : timeSlotService.getTimeSlots()) {
+                    if(ts.getApproval() == (approval != 1)){
+                        returnSet.add(ts);
+                    }
+                }
+                return new ResponseEntity<>(returnSet, HttpStatus.OK);
+
+            }
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.DELETE)
