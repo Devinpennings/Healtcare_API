@@ -2,23 +2,17 @@ package com.pharmacy.healthcare.controller;
 
 
 import com.pharmacy.healthcare.TimeSlotGenerator;
-import com.pharmacy.healthcare.domain.Doctor;
-import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.PatientRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
-import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.TimeSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,63 +43,86 @@ public class TimeSlotController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getTimeSlots(@RequestParam(value = "availability", required = false, defaultValue = "2") int availability)
+    public ResponseEntity<?> getTimeSlots()
     {
-        try
-        {
-            if (availability == 2) {
-                return new ResponseEntity<>(timeSlotService.getTimeSlots(), HttpStatus.OK);
-            }else{
-                Set<TimeSlot> returnSet = new HashSet<>();
-
-                for (TimeSlot ts : timeSlotService.getTimeSlots()) {
-                    if(ts.getAvailable() == (availability != 0)){
-
-                        returnSet.add(ts);
-
-                    }
-                }
-
-                return new ResponseEntity<>(returnSet, HttpStatus.OK);
-            }
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.noContent().build();
-        }
+        return new ResponseEntity<>(timeSlotRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.POST)
-    public ResponseEntity<?> addTimeSlot(@PathVariable long timeslot_id, @RequestParam(value = "user_id") long user_id)
-    {
-        timeSlotService.reserveTimeSlot(timeslot_id, user_id);
-        return ResponseEntity.ok().build();
-    }
-
-    @RequestMapping(value = "/{doctor_id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDoctorAppointments(@PathVariable long doctor_id, @RequestParam(value = "approval", required = false, defaultValue = "2") int approval){
+    @RequestMapping(method = RequestMethod.GET, value = "/available")
+    public ResponseEntity<?> getDoctorAppointments(@RequestParam(value = "doctor_id", required = false, defaultValue = "0") long doctor_id,@RequestParam(value = "availability", required = false, defaultValue = "2") long availability){
         try{
-            if (approval == 2) {
-                return new ResponseEntity<Object>( timeSlotRepository.findAllByDoctorId(doctor_id), HttpStatus.OK);
+            if (availability == 2 && doctor_id == 0) {
+                //todo alle availabale
+                return new ResponseEntity<>(timeSlotRepository.findAllByAvailableIsTrue(), HttpStatus.OK);
             }
-            else{
+            else if (availability == 1){
                 Set<TimeSlot> returnSet = new HashSet<>();
 
-                for (TimeSlot ts : timeSlotService.getTimeSlots()) {
-                    if(ts.getApproval() == (approval != 1)){
+                for (TimeSlot ts : timeSlotRepository.findAllByDoctorId(doctor_id)) {
+                    if(ts.getAvailable()){
                         returnSet.add(ts);
                     }
                 }
                 return new ResponseEntity<>(returnSet, HttpStatus.OK);
+            }
+            else {
+                Set<TimeSlot> returnSet = new HashSet<>();
 
+                for (TimeSlot ts : timeSlotRepository.findAllByDoctorId(doctor_id)) {
+                    if(!ts.getAvailable()){
+                        returnSet.add(ts);
+                    }
+                }
+                return new ResponseEntity<>(returnSet, HttpStatus.OK);
             }
         }
         catch (Exception e)
         {
             return ResponseEntity.notFound().build();
         }
-
     }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/approved")
+    public ResponseEntity<?> getApproved(@RequestParam(value = "doctor_id", required = false, defaultValue = "0") long doctor_id, @RequestParam(value = "approval", required = false, defaultValue = "2") long approval) {
+        try {
+            if (approval == 2 && doctor_id ==0) {
+                return new ResponseEntity<>(timeSlotRepository.findAllByApprovalIsTrue(), HttpStatus.OK);
+            } else if (approval == 1) {
+                Set<TimeSlot> returnSet = new HashSet<>();
+
+                for (TimeSlot ts : timeSlotRepository.findAllByDoctorId(doctor_id)) {
+                    if (ts.getApproval()) {
+                        returnSet.add(ts);
+                    }
+                }
+                return new ResponseEntity<>(returnSet, HttpStatus.OK);
+            }
+            else {
+                Set<TimeSlot> returnSet = new HashSet<>();
+
+                for (TimeSlot ts : timeSlotRepository.findAllByDoctorId(doctor_id)) {
+                    if (!ts.getApproval()) {
+                        returnSet.add(ts);
+                    }
+                }
+                return new ResponseEntity<>(returnSet, HttpStatus.OK);
+            }
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.POST)
+    public ResponseEntity<?> addTimeSlot(@PathVariable long timeslot_id, @RequestParam(value = "user_id") long user_id, @RequestParam(value = "note") String note)
+    {
+        timeSlotService.reserveTimeSlot(timeslot_id, user_id, note);
+        return ResponseEntity.ok().build();
+    }
+
 
     @RequestMapping(value = "/{timeslot_id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> clearTimeSlot(@PathVariable long timeslot_id)

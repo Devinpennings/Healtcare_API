@@ -36,11 +36,12 @@ public class TimeSlotService {
         return timeSlots;
     }
 
-    public void reserveTimeSlot(long timeslot_id, long user_id)
+    public void reserveTimeSlot(long timeslot_id, long user_id, String note)
     {
         TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
         timeSlot.setMappedPatient(patientRepository.findOne(user_id));
         timeSlot.setAvailable(false);
+        timeSlot.setNote(note);
         timeSlotRepository.save(timeSlot);
     }
 
@@ -49,6 +50,7 @@ public class TimeSlotService {
         TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
         timeSlot.removeMappedPatient();
         timeSlot.setAvailable(true);
+        timeSlot.setNote(null);
         timeSlotRepository.save(timeSlot);
     }
 
