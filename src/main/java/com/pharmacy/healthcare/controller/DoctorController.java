@@ -11,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/doctors")
 public class DoctorController {
@@ -45,7 +42,7 @@ public class DoctorController {
             if (doctor_id != 0) {
                 return new ResponseEntity<>(doctorRepository.findOne(doctor_id), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(userRepository.findAllByDoctorType(), HttpStatus.OK);
+                return new ResponseEntity<>(userRepository.findAllEmployees(), HttpStatus.OK);
             }
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

@@ -4,8 +4,6 @@ import com.pharmacy.healthcare.domain.Admin;
 import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service("adminService")

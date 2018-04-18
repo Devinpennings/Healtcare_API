@@ -108,16 +108,16 @@ public class Patient extends User implements Serializable {
      * Use Authentication: Yes
      * Port for SSL: 465
      */
-    public void emailTest(String email) {
-        String[] to = {email};
-        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "test", createHtmlStringBody("email.html"));
-    }
+//    public void emailTest(String email) {
+//        String[] to = {email};
+//        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "test", createHtmlStringBody(new File("email.html").getAbsolutePath()));
+//    }
 
-    public void sendConfirmationMail(Patient patient) {
-        //todo change template add date and name
-        String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
-        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody("email.html"));
-    }
+//    public void sendConfirmationMail(Patient patient) {
+//        //todo change template add date and name
+//        String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
+//        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activeer alstublieft uw account.", createHtmlStringBody(new File("email.html").getAbsolutePath()));
+//    }
 
     public void sendAppointmentCancelMail(Patient patient){
         String[] to = {patient.getUsername()};
@@ -125,15 +125,13 @@ public class Patient extends User implements Serializable {
         email = email.replaceAll("USERNAME", patient.getFirstname());
         email = email.replaceAll("AFSPRAAK", "Uw afspraak met dr. " + patient.mappedDoctor.getLastname() + " is afgezegd vanwege een dubbele afspraak van uw huisarts. Excuses voor het ongemak");
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Uw afspraak is afgezegd.", email);
-
-
     }
 
 
     public void sendActivationMail(Patient patient) {
         //todo maak de placeholders in de html en user moet naam en achternaam krijgen
         String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
-        String email = createHtmlStringBody("email.html");
+        String email = createHtmlStringBody(getClass().getClassLoader().getResource("email.html").toString());
         email = email.replaceAll("USERNAME", patient.getFirstname());
         email = email.replaceAll("endpoint", "http://localhost:8080/register?token=" + patient.getActivationToken());
         sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
