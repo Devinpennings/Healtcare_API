@@ -1,11 +1,12 @@
-INSERT INTO users (dtype, username  , password, enabled, age, lastname, firstname) VALUES
-	('doctor', 'sanderklijsen@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'klijsen', 'sander'),
-	('doctor', 'timkurvers@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'kurvers', 'tim'),
-  ('patient', 'devinpennings@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'pennings', 'devin'),
- 	('patient',  'daveyvandenbogaard@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'bogaard', 'davey'),
- 	('admin',  'stefangies@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'gies', 'stefan'),
- 	('admin',  'ottonaus@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'naus', 'otto'),
- 	('patient',  'jeroenwasser@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'wasser', 'jeroen');
+INSERT INTO users (dtype, username  , password, enabled, age, lastname, firstname, gender, street, city, zipcode, housenumber, doctors_user_id) VALUES
+	('doctor', 'sanderklijsen@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'klijsen', 'sander', 'male', 'straat', 'Eindhoven', '1010xx', '10', null),
+	('doctor', 'timkurvers@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'kurvers', 'tim', 'male', 'straat', 'Eindhoven', '1010xx', '10', null),
+  ('patient', 'devinpennings@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'pennings', 'devin', 'male', 'straat', 'Eindhoven', '1010xx', '10', 1),
+ 	('patient',  'daveyvandenbogaard@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000', 'bogaard', 'davey', 'male', 'straat', 'Eindhoven', '1010xx', '10', 1),
+ 	('admin',  'stefangies@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'gies', 'stefan', 'male', 'straat', 'Eindhoven', '1010xx', '10', null),
+ 	('admin',  'ottonaus@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'naus', 'otto', 'male', 'straat', 'Eindhoven', '1010xx', '10', null),
+ 	('patient',  'jeroenwasser@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'wasser', 'jeroen', 'male', 'straat', 'Eindhoven', '1010xx', '10', 1),
+ 	('doctorEmployee', 'doctoremployee@example.com', '$2a$10$D4OLKI6yy68crm.3imC9X.P2xqKHs5TloWUcr6z5XdOqnTrAK84ri', 1, '2015-07-27 00:00:00.000' , 'wasser', 'jeroen', 'male', 'straat', 'Eindhoven', '1010xx', '10', 1);
 
 drop table if exists oauth_client_details;
 create table oauth_client_details (

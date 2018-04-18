@@ -43,7 +43,7 @@ public class PatientsController {
         return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
                                         @RequestBody Patient patient){
         Patient currentUser = (Patient) userRepository.findOne(id);
@@ -55,6 +55,12 @@ public class PatientsController {
             currentUser.setUsername(patient.getUsername());
             currentUser.setFirstname(patient.getFirstname());
             currentUser.setLastname(patient.getLastname());
+            currentUser.setAge(patient.getAge());
+            currentUser.setGender(patient.getGender());
+            currentUser.setStreet(patient.getStreet());
+            currentUser.setCity(patient.getCity());
+            currentUser.setZipcode(patient.getZipcode());
+            currentUser.setHousenumber(patient.getHousenumber());
 
             userRepository.save(currentUser);
             return new ResponseEntity<Patient>(currentUser, HttpStatus.OK);
