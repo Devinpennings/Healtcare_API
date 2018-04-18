@@ -105,6 +105,19 @@ public class PatientsController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deletePatient(@PathVariable("id") long patientId) {
+
+        try{
+            patientRepository.delete(patientId);
+            return ResponseEntity.noContent().build();
+        }
+        catch(ResourceNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
     @RequestMapping(value = "/dossier/{user_id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDossier(@PathVariable long user_id)
     {

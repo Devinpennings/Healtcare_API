@@ -34,7 +34,7 @@ public class DoctorController {
     private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
+    public ResponseEntity<?> updateDoctor(@PathVariable("id") long id,
                                            @RequestBody Doctor doctor) {
         return new ResponseEntity<>(doctorService.updateDoctor(id, doctor), HttpStatus.OK);
     }
