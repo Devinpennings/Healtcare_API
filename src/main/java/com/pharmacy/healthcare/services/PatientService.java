@@ -4,11 +4,21 @@ import com.pharmacy.healthcare.domain.*;
 import com.pharmacy.healthcare.repository.*;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.*;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Properties;
 
 @Service("patientService")
 public class PatientService {
@@ -64,7 +74,7 @@ public class PatientService {
             UserToken userToken = new UserToken(generateRandomToken(10), getActivationExpireDate(), TokenType.ACTIVATION, false, p);
             p.addToken(userToken);
             tokenRepository.save(userToken);
-            p.sendActivationMail(p);
+            sendActivationMail(p);
         }
         return patient;
     }
@@ -105,6 +115,97 @@ public class PatientService {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return new java.sql.Date(cal.getTimeInMillis());
+    }
+
+
+    public void sendAppointmentCancelMail(Patient patient){
+        String[] to = {patient.getUsername()};
+        String email = createHtmlStringBody("cancelEmail.html");
+        email = email.replaceAll("USERNAME", patient.getFirstname());
+        email = email.replaceAll("AFSPRAAK", "Uw afspraak met dr. " + patient.mappedDoctor.getLastname() + " is afgezegd vanwege een dubbele afspraak van uw huisarts. Excuses voor het ongemak");
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Uw afspraak is afgezegd.", email);
+    }
+
+
+    public void sendActivationMail(Patient patient) {
+        //todo maak de placeholders in de html en user moet naam en achternaam krijgen
+        String[] to = {patient.getUsername()}; // can be changed to a list of recipient email addresses
+        String email = createHtmlStringBody("email.html");
+        email = email.replaceAll("USERNAME", patient.getFirstname());
+        email = email.replaceAll("endpoint", "http://localhost:8080/register?token=" + patient.getActivationToken());
+        sendFromGMail(getEmailProperties().getProperty("username"), getEmailProperties().getProperty("password"), to, "Activation", email);
+    }
+
+    private String createHtmlStringBody(String htmlTemplateName) {
+        StringBuilder contentBuilder = new StringBuilder();
+        try {
+            InputStream template = new ClassPathResource(htmlTemplateName).getInputStream();
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(template, "UTF-8"))) {
+                String str;
+                while ((str = in.readLine()) != null) {
+                    contentBuilder.append(str);
+                }
+                in.close();
+                return contentBuilder.toString();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Properties getEmailProperties() {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            input = new ClassPathResource("email.properties").getInputStream();
+            prop.load(input);
+            return prop;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+        Properties props = System.getProperties();
+        String host = "smtp.gmail.com";
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.user", from);
+        props.put("mail.smtp.password", pass);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+
+        try {
+            message.setFrom(new InternetAddress(from));
+            InternetAddress[] toAddress = new InternetAddress[to.length];
+
+            // To get the array of addresses
+            for (int i = 0; i < to.length; i++) {
+                toAddress[i] = new InternetAddress(to[i]);
+            }
+
+            for (int i = 0; i < toAddress.length; i++) {
+                message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+            }
+
+            message.setSubject(subject);
+            message.setContent(body, "text/html");
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, from, pass);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (AddressException ae) {
+            ae.printStackTrace();
+        } catch (MessagingException me) {
+            me.printStackTrace();
+        }
     }
 
 }

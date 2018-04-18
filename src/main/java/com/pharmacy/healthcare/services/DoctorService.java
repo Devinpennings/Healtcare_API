@@ -6,6 +6,7 @@ import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,10 @@ public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
 
+    @Autowired
+    @Qualifier("patientService")
+    PatientService patientService;
+
     public void addTimeSlotsToDoctors(Set<TimeSlot> timeSlotlist) {
         Collection<Doctor> doctors = userRepository.findAllDoctors();
         for (Doctor doctor : doctors) {
@@ -43,7 +48,11 @@ public class DoctorService {
             currentUser.setUsername(doctor.getUsername());
             currentUser.setFirstname(doctor.getFirstname());
             currentUser.setLastname(doctor.getLastname());
-
+            currentUser.setGender(doctor.getGender());
+            currentUser.setStreet(doctor.getStreet());
+            currentUser.setCity(doctor.getCity());
+            currentUser.setZipcode(doctor.getZipcode());
+            currentUser.setHousenumber(doctor.getHousenumber());
             return userRepository.save(currentUser);
         }
     }
@@ -73,7 +82,7 @@ public class DoctorService {
                     ts.setAvailable(false);
                 } else {
                     ts.setDoctorAvailable(false);
-                    ts.getMappedPatient().sendAppointmentCancelMail(ts.getMappedPatient());
+                    patientService.sendAppointmentCancelMail(ts.getMappedPatient());
                 }
                 timeSlotRepository.save(ts);
                 return true;

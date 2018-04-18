@@ -34,8 +34,8 @@ public class DoctorEmployeeController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ResponseEntity<?> updateDoctorEmployee(@PathVariable("id") long id,
                                            @RequestBody DoctorEmployee doctorEmployee){
         DoctorEmployee currentUser = (DoctorEmployee) userRepository.findOne(id);
 
@@ -46,6 +46,11 @@ public class DoctorEmployeeController {
             currentUser.setUsername(doctorEmployee.getUsername());
             currentUser.setFirstname(doctorEmployee.getFirstname());
             currentUser.setLastname(doctorEmployee.getLastname());
+            currentUser.setGender(doctorEmployee.getGender());
+            currentUser.setStreet(doctorEmployee.getStreet());
+            currentUser.setCity(doctorEmployee.getCity());
+            currentUser.setZipcode(doctorEmployee.getZipcode());
+            currentUser.setHousenumber(doctorEmployee.getHousenumber());
 
             userRepository.save(currentUser);
             return new ResponseEntity<DoctorEmployee>(currentUser, HttpStatus.OK);
