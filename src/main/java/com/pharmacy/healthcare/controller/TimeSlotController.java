@@ -53,7 +53,7 @@ public class TimeSlotController {
         try{
             if (availability == 2 && doctor_id == 0) {
                 //todo alle availabale
-                return new ResponseEntity<>(timeSlotRepository.findAllByAvailableIsTrue(), HttpStatus.OK);
+                return new ResponseEntity<>(timeSlotRepository.findAllByAvailableIsFalse(), HttpStatus.OK);
             }
             else if (availability == 1){
                 Set<TimeSlot> returnSet = new HashSet<>();

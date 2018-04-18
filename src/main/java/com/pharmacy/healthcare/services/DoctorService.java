@@ -6,6 +6,7 @@ import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ public class DoctorService {
 
     @Autowired
     DoctorRepository doctorRepository;
+
+    @Autowired
+    @Qualifier("patientService")
+    PatientService patientService;
 
     public void addTimeSlotsToDoctors(Set<TimeSlot> timeSlotlist) {
         Collection<Doctor> doctors = userRepository.findAllDoctors();
@@ -73,7 +78,7 @@ public class DoctorService {
                     ts.setAvailable(false);
                 } else {
                     ts.setDoctorAvailable(false);
-                    ts.getMappedPatient().sendAppointmentCancelMail(ts.getMappedPatient());
+                    patientService.sendAppointmentCancelMail(ts.getMappedPatient());
                 }
                 timeSlotRepository.save(ts);
                 return true;
