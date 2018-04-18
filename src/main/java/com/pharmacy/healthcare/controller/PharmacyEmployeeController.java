@@ -20,7 +20,7 @@ public class PharmacyEmployeeController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
                                            @RequestBody PharmacyEmployee pharmacyEmployee){
         PharmacyEmployee currentUser = (PharmacyEmployee) userRepository.findOne(id);
@@ -32,6 +32,11 @@ public class PharmacyEmployeeController {
             currentUser.setUsername(pharmacyEmployee.getUsername());
             currentUser.setFirstname(pharmacyEmployee.getFirstname());
             currentUser.setLastname(pharmacyEmployee.getLastname());
+            currentUser.setGender(pharmacyEmployee.getGender());
+            currentUser.setStreet(pharmacyEmployee.getStreet());
+            currentUser.setCity(pharmacyEmployee.getCity());
+            currentUser.setZipcode(pharmacyEmployee.getZipcode());
+            currentUser.setHousenumber(pharmacyEmployee.getHousenumber());
 
             userRepository.save(currentUser);
             return new ResponseEntity<PharmacyEmployee>(currentUser, HttpStatus.OK);

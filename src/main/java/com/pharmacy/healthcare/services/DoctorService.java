@@ -48,7 +48,11 @@ public class DoctorService {
             currentUser.setUsername(doctor.getUsername());
             currentUser.setFirstname(doctor.getFirstname());
             currentUser.setLastname(doctor.getLastname());
-
+            currentUser.setGender(doctor.getGender());
+            currentUser.setStreet(doctor.getStreet());
+            currentUser.setCity(doctor.getCity());
+            currentUser.setZipcode(doctor.getZipcode());
+            currentUser.setHousenumber(doctor.getHousenumber());
             return userRepository.save(currentUser);
         }
     }
