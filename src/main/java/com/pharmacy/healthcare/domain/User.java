@@ -37,6 +37,21 @@ public abstract class User implements UserDetails, Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = false;
 
+    @Column(name = "gender", nullable = true)
+    private String gender;
+
+    @Column(name = "street", nullable = true)
+    private String street;
+
+    @Column(name = "housenumber", nullable = true)
+    private String housenumber;
+
+    @Column(name = "zipcode", nullable = true)
+    private String zipcode;
+
+    @Column(name = "city", nullable = true)
+    private String city;
+
     public abstract String getType();
 
     @JsonIgnore
@@ -82,6 +97,46 @@ public abstract class User implements UserDetails, Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getHousenumber() {
+        return housenumber;
+    }
+
+    public void setHousenumber(String number) {
+        this.housenumber = number;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @JsonIgnore
