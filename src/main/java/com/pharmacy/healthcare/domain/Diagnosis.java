@@ -64,20 +64,20 @@ public class Diagnosis implements Serializable {
 //    }
 
 
-    public String getCategory() {
-        return category;
+    public String getCategory() throws Exception {
+        return EncryptionUtil.decrypt(category);
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategory(String category) throws Exception {
+        this.category = EncryptionUtil.encrypt(category);
     }
 
-    public String getReport() {
-        return report;
+    public String getReport() throws Exception {
+        return EncryptionUtil.decrypt(report);
     }
 
-    public void setReport(String report) {
-        this.report = report;
+    public void setReport(String report) throws Exception {
+        this.report = EncryptionUtil.encrypt(report);
     }
 
     @Override
