@@ -4,6 +4,8 @@ package com.pharmacy.healthcare.controller;
 import com.pharmacy.healthcare.domain.Doctor;
 import com.pharmacy.healthcare.domain.DoctorEmployee;
 import com.pharmacy.healthcare.repository.UserRepository;
+import com.pharmacy.healthcare.services.DoctorEmployeeService;
+import com.pharmacy.healthcare.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,45 +18,27 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorEmployeeController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    DoctorEmployeeService doctorEmployeeService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addDoctor(@RequestBody DoctorEmployee doctorEmployee) {
-
-        if (doctorEmployee == null) {
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
-        } else {
-            doctorEmployee.setEnabled(true);
-            doctorEmployee.setPassword(passwordEncoder.encode(doctorEmployee.getPassword()));
-            return new ResponseEntity<DoctorEmployee>(userRepository.save(doctorEmployee), HttpStatus.CREATED);
+    public ResponseEntity<?> addDoctorEmployee(@RequestBody DoctorEmployee doctorEmployee) {
+        DoctorEmployee createdDoctorEmployee = doctorEmployeeService.addDoctorEmployee(doctorEmployee);
+        if (createdDoctorEmployee != null)
+        {
+            return new ResponseEntity<>(createdDoctorEmployee, HttpStatus.OK);
         }
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateDoctorEmployee(@PathVariable("id") long id,
                                            @RequestBody DoctorEmployee doctorEmployee){
-        DoctorEmployee currentUser = (DoctorEmployee) userRepository.findOne(id);
-
-        if (currentUser == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        DoctorEmployee updatedDoctorEmployee = doctorEmployeeService.updateDoctorEmployee(id, doctorEmployee);
+        if (updatedDoctorEmployee != null)
+        {
+            return new ResponseEntity<>(updatedDoctorEmployee, HttpStatus.OK);
         }
-        else{
-            currentUser.setUsername(doctorEmployee.getUsername());
-            currentUser.setFirstname(doctorEmployee.getFirstname());
-            currentUser.setLastname(doctorEmployee.getLastname());
-            currentUser.setGender(doctorEmployee.getGender());
-            currentUser.setStreet(doctorEmployee.getStreet());
-            currentUser.setCity(doctorEmployee.getCity());
-            currentUser.setZipcode(doctorEmployee.getZipcode());
-            currentUser.setHousenumber(doctorEmployee.getHousenumber());
-
-            userRepository.save(currentUser);
-            return new ResponseEntity<DoctorEmployee>(currentUser, HttpStatus.OK);
-        }
+        return ResponseEntity.noContent().build();
     }
 
 

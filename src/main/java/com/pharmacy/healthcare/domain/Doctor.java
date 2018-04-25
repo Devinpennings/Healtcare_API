@@ -9,10 +9,7 @@ import java.util.*;
 
 @Entity
 @DiscriminatorValue("doctor")
-public class Doctor extends User implements Serializable{
-
-    public Doctor() {
-    }
+public class Doctor extends User implements Serializable {
 
     @Override
     public String getType() {
@@ -39,13 +36,11 @@ public class Doctor extends User implements Serializable{
     @Where(clause = "starttime >= CURRENT_TIMESTAMP")
     private Set<TimeSlot> timeSlots = new HashSet<>();
 
-    public void addTimeSlotList(Set<TimeSlot> timeSlots)
-    {
-        for (TimeSlot t: timeSlots
-             ) {
+    public void addTimeSlotList(Set<TimeSlot> timeSlots) {
+        for (TimeSlot t : timeSlots
+                ) {
             this.timeSlots.add(t);
-            if (t.getMappedDoctor() != this)
-            {
+            if (t.getMappedDoctor() != this) {
                 t.setMappedDoctor(this);
             }
         }
@@ -59,7 +54,7 @@ public class Doctor extends User implements Serializable{
         Set<TimeSlot> returnSet = new HashSet<>();
 
         for (TimeSlot ts : this.timeSlots) {
-            if((ts.getStartTime().after(startTime) && ts.getStartTime().before(endTime)) ||
+            if ((ts.getStartTime().after(startTime) && ts.getStartTime().before(endTime)) ||
                     (ts.getEndTime().after(startTime) && ts.getEndTime().before(endTime)) ||
                     (ts.getEndTime().compareTo(endTime) == 0 && ts.getStartTime().compareTo(startTime) == 0)
                     ) {
@@ -73,31 +68,35 @@ public class Doctor extends User implements Serializable{
     }
 
 
-    public void removeTimeSlot(TimeSlot timeSlot){
+    public void removeTimeSlot(TimeSlot timeSlot) {
         timeSlots.remove(timeSlot);
     }
 
-    public void addPatientToDoctor(Patient patient)
-    {
+    public void addPatientToDoctor(Patient patient) {
         patients.add(patient);
-        if(patient.getDoctor() != this)
-        {
+        if (patient.getDoctor() != this) {
             patient.setMappedDoctor(this);
         }
     }
 
-    public Set<Patient> getPatients()
-    {
+    public Set<Patient> getPatients() {
         return patients;
     }
 
-    public boolean isAvailable(Date timeStamp){
+    public boolean isAvailable(Date timeStamp) {
         for (TimeSlot ts : this.timeSlots) {
-            if(((timeStamp.after(ts.getStartTime()) && timeStamp.before(ts.getEndTime())) ||
+            if (((timeStamp.after(ts.getStartTime()) && timeStamp.before(ts.getEndTime())) ||
                     (ts.getEndTime().compareTo(timeStamp) == 0 && ts.getStartTime().compareTo(timeStamp) == 0)) && ts.getAvailable() == false) {
                 return false;
             }
         }
         return true;
+    }
+
+    public Doctor() {
+    }
+
+    public Doctor(String firstname, String lastname, String username, boolean enabled) {
+        super(firstname, lastname, username, enabled);
     }
 }
