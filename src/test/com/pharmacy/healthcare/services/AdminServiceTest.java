@@ -20,6 +20,10 @@ public class AdminServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+
+
+
     @InjectMocks
     private AdminService adminService;
 

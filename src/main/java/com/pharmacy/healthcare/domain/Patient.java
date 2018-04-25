@@ -15,6 +15,16 @@ public class Patient extends User implements Serializable {
     public Patient() {
     }
 
+    public Patient(String firstname, String lastname, String username, boolean enabled, Date age) {
+        super(firstname, lastname, username, enabled);
+        this.age = age;
+    }
+
+    public Patient(long id, String firstname, String lastname, String username, String password, boolean enabled, Date age) {
+        super(id, firstname, lastname, username, password, enabled);
+        this.age = age;
+    }
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
     public Doctor mappedDoctor;
