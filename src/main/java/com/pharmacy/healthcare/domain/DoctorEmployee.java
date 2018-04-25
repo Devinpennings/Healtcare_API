@@ -12,6 +12,10 @@ public class DoctorEmployee extends User implements Serializable{
     public DoctorEmployee() {
     }
 
+    public DoctorEmployee(String firstname, String lastname, String username, boolean enabled) {
+        super(firstname, lastname, username, enabled);
+    }
+
     @Override
     public String getType() {
         return "doctorEmployee";

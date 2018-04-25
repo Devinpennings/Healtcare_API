@@ -1,20 +1,18 @@
 package com.pharmacy.healthcare.services;
 
 import com.pharmacy.healthcare.domain.Doctor;
+import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.domain.TimeSlot;
+import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("doctorService")
 public class DoctorService {
@@ -26,6 +24,9 @@ public class DoctorService {
 
     @Autowired
     DoctorRepository doctorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     @Qualifier("patientService")
@@ -54,6 +55,40 @@ public class DoctorService {
             currentUser.setZipcode(doctor.getZipcode());
             currentUser.setHousenumber(doctor.getHousenumber());
             return userRepository.save(currentUser);
+        }
+    }
+
+    public Collection<User> getAllDoctors(long doctor_id)
+    {
+        try {
+            if (doctor_id != 0) {
+                return Collections.singletonList(doctorRepository.findOne(doctor_id));
+            } else {
+                return userRepository.findAllEmployees();
+            }
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public Collection<Patient> getAllPatientsByDoctorId(long doctor_id)
+    {
+        try {
+            Doctor doctor = doctorRepository.findOne(doctor_id);
+            return doctor.getPatients();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public Doctor addDoctor(Doctor doctor)
+    {
+        if (doctor == null) {
+            return null;
+        } else {
+            doctor.setEnabled(true);
+            doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
+            return userRepository.save(doctor);
         }
     }
 

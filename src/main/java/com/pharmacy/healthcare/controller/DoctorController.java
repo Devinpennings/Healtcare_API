@@ -1,6 +1,8 @@
 package com.pharmacy.healthcare.controller;
 
 import com.pharmacy.healthcare.domain.Doctor;
+import com.pharmacy.healthcare.domain.Patient;
+import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.DoctorRepository;
 import com.pharmacy.healthcare.repository.TimeSlotRepository;
 import com.pharmacy.healthcare.repository.UserRepository;
@@ -11,24 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/doctors")
 public class DoctorController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     DoctorService doctorService;
-
-    @Autowired
-    DoctorRepository doctorRepository;
-
-    @Autowired
-    TimeSlotRepository timeSlotRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateDoctor(@PathVariable("id") long id,
@@ -38,36 +31,32 @@ public class DoctorController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getAllDoctors(@RequestParam(value = "doctor_id", required = false, defaultValue = "0") long doctor_id) {
-        try {
-            if (doctor_id != 0) {
-                return new ResponseEntity<>(doctorRepository.findOne(doctor_id), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(userRepository.findAllEmployees(), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+        Collection<User> users = doctorService.getAllDoctors(doctor_id);
+        if (!users.isEmpty())
+        {
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/patients/{doctor_id}")
     public ResponseEntity<?> getAllPatientsByDoctorId(@RequestParam(value = "doctor_id") long doctor_id) {
-        try {
-            Doctor doctor = doctorRepository.findOne(doctor_id);
-            return new ResponseEntity<>(doctor.getPatients(), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+        Collection<Patient> patients = doctorService.getAllPatientsByDoctorId(doctor_id);
+        if (!patients.isEmpty())
+        {
+            return new ResponseEntity<>(patients, HttpStatus.OK);
         }
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) {
-        if (doctor == null) {
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
-        } else {
-            doctor.setEnabled(true);
-            doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
-            return new ResponseEntity<>(userRepository.save(doctor), HttpStatus.CREATED);
+        Doctor addedDoctor = doctorService.addDoctor(doctor);
+        if (addedDoctor != null)
+        {
+            return new ResponseEntity<>(addedDoctor, HttpStatus.OK);
         }
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "requestSubtitude/{id}", method = RequestMethod.POST)
@@ -84,7 +73,5 @@ public class DoctorController {
         {
             return ResponseEntity.notFound().build() ;
         }
-
-
     }
 }
