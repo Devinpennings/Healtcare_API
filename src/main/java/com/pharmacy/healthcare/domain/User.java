@@ -139,6 +139,8 @@ public abstract class User implements UserDetails, Serializable {
         this.city = city;
     }
 
+
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
@@ -198,6 +200,15 @@ public abstract class User implements UserDetails, Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
+        this.enabled = enabled;
+    }
+
+    public User(long id, String firstname, String lastname, String username, String password, boolean enabled) {
+        this.user_id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
         this.enabled = enabled;
     }
 }

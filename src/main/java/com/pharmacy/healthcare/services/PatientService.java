@@ -5,6 +5,9 @@ import com.pharmacy.healthcare.repository.*;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -33,39 +36,99 @@ public class PatientService {
     DoctorRepository doctorRepository;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-    public Collection<Diagnosis> findAllByUserId(long user_id)
-    {
+    public Collection<Diagnosis> GetAllDiagnosisByUserId(long user_id) {
         return diagnosisRepository.findAllByUserId(user_id);
     }
 
-    public Patient save(Diagnosis diagnosis, long user_id)
-    {
+    public Patient createPatient(Diagnosis diagnosis, long user_id) {
         Patient patient = patientRepository.findOneByUser(user_id);
         patient.addDiagnosis(diagnosis);
         patientRepository.save(patient);
         return patient;
     }
 
-    public void deleteDiagnosis(long user_id, long id)
-    {
-        Patient p = patientRepository.findOne(user_id);
-        p.removeDiagnosis(diagnosisRepository.findDiagnosesById(id));
-        patientRepository.save(p);
+    public Collection<Patient> getPatients() {
+        return patientRepository.findAll();
     }
 
-    public void deleteDossier(long user_id)
-    {
-        Patient p = patientRepository.findOne(user_id);
-        p.removeAllDiagnoses();
-        patientRepository.save(p);
+    public Patient getPatient(long id){
+        return patientRepository.findOne(id);
     }
 
-    public Patient save(Patient patient, long doctor_id){
+
+
+    public Patient updatePatient(long id, Patient patient) {
+        Patient currentUser = (Patient) userRepository.findOne(id);
+
+        if (currentUser == null) {
+            return null;
+        } else {
+            currentUser.setUsername(patient.getUsername());
+            currentUser.setFirstname(patient.getFirstname());
+            currentUser.setLastname(patient.getLastname());
+            currentUser.setAge(patient.getAge());
+            currentUser.setGender(patient.getGender());
+            currentUser.setStreet(patient.getStreet());
+            currentUser.setCity(patient.getCity());
+            currentUser.setZipcode(patient.getZipcode());
+            currentUser.setHousenumber(patient.getHousenumber());
+            userRepository.save(currentUser);
+            return currentUser;
+        }
+
+    }
+
+    public boolean deleteDiagnosis(long user_id, long id)
+    {
+        Patient p = patientRepository.findOne(user_id);
+        if(p!=null){
+            p.removeDiagnosis(diagnosisRepository.findDiagnosesById(id));
+            patientRepository.save(p);
+            return true;
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
+    public boolean deleteDossier(long user_id)
+    {
+        Patient p = patientRepository.findOne(user_id);
+        if(p!=null){
+            p.removeAllDiagnoses();
+            patientRepository.save(p);
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public User enableUser(String token, String password){
+        User user = validateToken(token);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(password));
+            user.setEnabled(true);
+            userRepository.save(user);
+            return user;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Patient createPatient(Patient patient, long doctor_id){
         Doctor doctor = doctorRepository.findOne(doctor_id);
         Patient p = patientRepository.save(patient);
         doctor.addPatientToDoctor(p);
@@ -77,6 +140,8 @@ public class PatientService {
             sendActivationMail(p);
         }
         return patient;
+
+
     }
 
     public User validateToken(String token){
@@ -88,15 +153,14 @@ public class PatientService {
         return null;
     }
 
-    public User setPassAndEnable(User user){
-        if(user!=null){
-            user.setEnabled(true);
-            userRepository.save(user);
-            //todo token to used
-            return user;
-        }
-        return null;
-    }
+//    public User setPassAndEnable(User user){
+//        if(user!=null){
+//            user.setEnabled(true);
+//            userRepository.createPatient(user);
+//            return user;
+//        }
+//        return null;
+//    }
 
     public String generateRandomToken(int length){
         RandomStringGenerator generator = new RandomStringGenerator.Builder()

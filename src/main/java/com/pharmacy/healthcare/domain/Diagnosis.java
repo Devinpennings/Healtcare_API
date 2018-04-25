@@ -5,7 +5,8 @@ import com.pharmacy.healthcare.aes.EncryptionUtil;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.security.GeneralSecurityException;
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "diagnosis")
@@ -29,7 +30,7 @@ public class Diagnosis implements Serializable {
     private String report;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private java.util.Date date;
 
     public Diagnosis()
     {
@@ -78,6 +79,20 @@ public class Diagnosis implements Serializable {
 
     public void setReport(String report) throws Exception {
         this.report = EncryptionUtil.encrypt(report);
+    }
+
+    public Diagnosis(String category, String report, Date date) {
+        this.category = category;
+        this.report = report;
+        this.date = date;
+    }
+
+
+    public Diagnosis(long id, String category, String report, Date date) {
+        this.id = id;
+        this.category = category;
+        this.report = report;
+        this.date = date;
     }
 
     @Override
