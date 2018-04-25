@@ -57,7 +57,7 @@ public class DoctorService {
         }
     }
 
-    public Boolean requestSubtitude(long request_id, long subtitude_id, String starttime, String endtime) {
+    public void requestSubtitude(long request_id, long subtitude_id, String starttime, String endtime) {
         Date startTime;
         Date endTime;
 
@@ -85,11 +85,8 @@ public class DoctorService {
                     patientService.sendAppointmentCancelMail(ts.getMappedPatient());
                 }
                 timeSlotRepository.save(ts);
-                return true;
             }
         } catch (Exception e) {
-            return false;
         }
-        return false;
     }
 }

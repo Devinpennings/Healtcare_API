@@ -75,8 +75,16 @@ public class DoctorController {
                                               @RequestParam(value = "subtitudeId") long pSubtitudeId,
                                               @RequestParam(value = "startTime") String pStartTime,
                                               @RequestParam(value = "endTime") String pEndTime) {
-        if (doctorService.requestSubtitude(requestId, pSubtitudeId, pStartTime, pEndTime)) {
+
+        try {
+            doctorService.requestSubtitude(requestId, pSubtitudeId, pStartTime, pEndTime);
             return ResponseEntity.ok().build();
-        } else return ResponseEntity.notFound().build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.notFound().build() ;
+        }
+
+
     }
 }

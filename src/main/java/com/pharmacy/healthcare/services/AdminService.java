@@ -21,8 +21,8 @@ public class AdminService {
             currentUser.setUsername(admin.getUsername());
             currentUser.setFirstname(admin.getFirstname());
             currentUser.setLastname(admin.getLastname());
-
-            return userRepository.save(currentUser);
+            userRepository.save(currentUser);
+            return currentUser;
         }
     }
 }

@@ -15,4 +15,13 @@ public class Medicine implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "barcode", nullable = false, unique = true)
+    private String barcode;
+
+    @Column(name = "weight", nullable = false)
+    private Long weight;
+
+    @Column(name = "stock")
+    private Long stock;
+
 }

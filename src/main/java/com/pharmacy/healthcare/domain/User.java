@@ -193,4 +193,11 @@ public abstract class User implements UserDetails, Serializable {
     public User() {
 
     }
+
+    public User(String firstname, String lastname, String username, boolean enabled) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.enabled = enabled;
+    }
 }

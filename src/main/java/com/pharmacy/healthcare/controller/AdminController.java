@@ -1,10 +1,8 @@
 package com.pharmacy.healthcare.controller;
 
 import com.pharmacy.healthcare.domain.Admin;
-import com.pharmacy.healthcare.domain.Patient;
 import com.pharmacy.healthcare.repository.UserRepository;
 import com.pharmacy.healthcare.services.AdminService;
-import com.pharmacy.healthcare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
