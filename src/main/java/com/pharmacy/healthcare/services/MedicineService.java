@@ -7,7 +7,7 @@ public class MedicineService {
 
     public void addMedicine(long pharmacy_id)
     {
-        
+
     }
 
 }
