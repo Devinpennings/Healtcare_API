@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "timeslot")
-public class TimeSlot implements Serializable {
+public class  TimeSlot implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -80,6 +80,17 @@ public class TimeSlot implements Serializable {
         this.available = available;
         this.approval = false;
     }
+
+    public TimeSlot(int id, java.util.Date startTime, java.util.Date endTime, String note, Boolean available) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.note = note;
+        this.available = available;
+        this.approval = false;
+    }
+
+
 
     public java.util.Date getStartTime() {
         return startTime;
