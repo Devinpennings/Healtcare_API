@@ -19,4 +19,9 @@ public class Pharmacy extends MedicalCompany implements Serializable {
         super(id, name, street, city, number, telNumber);
         this.medicines = medicines;
     }
+
+    public void addMedicine(Medicine medicine)
+    {
+        medicines.add(medicine);
+    }
 }

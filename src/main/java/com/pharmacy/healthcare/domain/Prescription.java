@@ -8,7 +8,6 @@ import java.sql.Date;
 @Table(name = "prescription")
 public class Prescription implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
@@ -17,11 +16,8 @@ public class Prescription implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     private Medicine medicine;
 
-    @Column(name = "unitOfMeasure", nullable = false)
-    private String unitOfMeasure;
-
     @Column(name = "quantity", nullable = false)
-    private Double quantity;
+    private long     quantity;
 
     @Column(name = "instructions", nullable = false)
     private String instructions;
@@ -32,6 +28,13 @@ public class Prescription implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     private Patient patient;
 
+    public void setMedicine(Medicine medicine, long quantity) {
+        this.medicine = medicine;
+        this.quantity = quantity;
+        medicine.orderMedicine(quantity);
+    }
 
-
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
 }

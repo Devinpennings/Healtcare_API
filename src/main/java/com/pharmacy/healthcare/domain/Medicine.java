@@ -24,4 +24,36 @@ public class Medicine implements Serializable {
     @Column(name = "stock")
     private Long stock;
 
+    public Medicine() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public Long getStock() {
+        return stock;
+    }
+
+    public Long orderMedicine(long quantity)
+    {
+        return stock -= quantity;
+    }
+
+    public Long updateStock(Long quantity) {
+        this.stock += quantity;
+        return stock;
+    }
 }

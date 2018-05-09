@@ -63,7 +63,6 @@ public class Doctor extends User implements Serializable {
 
             }
         }
-
         return returnSet;
     }
 
