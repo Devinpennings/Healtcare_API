@@ -38,7 +38,6 @@ public class UserServiceTest {
         date = c.getTime();
         patient = new Patient(1,"x", "x", "x", "x", true, date);
         patient.setUsername("test");
-
     }
 
     @Test
