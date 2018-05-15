@@ -129,7 +129,6 @@ public class TimeSlotService {
         timeSlot.setMappedPatient(null);
         timeSlot.setApproval(false);
         timeSlot.setAvailable(true);
-
     }
 
 
