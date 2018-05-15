@@ -27,17 +27,6 @@ public class TimeSlotService {
     @Autowired
     private TimeSlotRepository timeSlotRepository;
 
-//    public Set<TimeSlot> getTimeSlots()
-//    {
-//        Set<TimeSlot> timeSlots = new HashSet<>();
-//        Iterable<Doctor> doctors = doctorRepository.findAll();
-//        for (Doctor doc: doctors
-//             ) {
-//            timeSlots.addAll(doc.getTimeSlots());
-//        }
-//        return timeSlots;
-//    }
-
     public void reserveTimeSlot(long timeslot_id, long user_id, String note)
     {
         TimeSlot timeSlot = timeSlotRepository.findOne(timeslot_id);
