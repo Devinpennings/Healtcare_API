@@ -23,6 +23,8 @@ public class TimeSlotController {
  @Autowired
     TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
 
+ 
+
     @PostConstruct
     public void init() {
         try {
