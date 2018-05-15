@@ -119,7 +119,4 @@ public class TimeSlotService {
         timeSlot.setApproval(false);
         timeSlot.setAvailable(true);
     }
-
-
-
 }
