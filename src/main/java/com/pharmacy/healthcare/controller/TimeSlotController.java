@@ -20,7 +20,7 @@ import java.util.Set;
 @RequestMapping("/timeslots")
 public class TimeSlotController {
 
- @Autowired
+    @Autowired
     TimeSlotGenerator timeSlotGenerator = new TimeSlotGenerator();
 
  
