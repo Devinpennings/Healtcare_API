@@ -28,8 +28,10 @@ public class UserService implements UserDetailsService {
 
 
 
-    public boolean userExists(String user)
-    {
-        return userRepository.findOneByUsername(user) != null;
-    }
+
+
+//    public boolean userExists(String user)
+//    {
+//        return userRepository.findOneByUsername(user) != null;
+//    }
 }

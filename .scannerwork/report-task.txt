@@ -1,0 +1,6 @@
+projectKey=my:Healthcare_API
+serverUrl=http://localhost:9000
+serverVersion=7.1.0.11001
+dashboardUrl=http://localhost:9000/dashboard/index/my:Healthcare_API
+ceTaskId=AWL83iQ5eDYpxFT7su-G
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWL83iQ5eDYpxFT7su-G

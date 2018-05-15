@@ -52,6 +52,7 @@ public class EncryptionUtil {
 
 
     private static final String ALGO = "AES";
+    //todo key uit de code halen en file maken
     private static final byte[] keyValue =
             new byte[]{'T', 'h', 'e', 'B', 'e', 's', 't', 'S', 'e', 'c', 'r', 'e', 't', 'K', 'e', 'y'};
 
