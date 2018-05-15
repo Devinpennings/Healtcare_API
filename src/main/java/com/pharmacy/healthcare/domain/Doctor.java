@@ -63,6 +63,7 @@ public class Doctor extends User implements Serializable {
 
             }
         }
+
         return returnSet;
     }
 
@@ -97,9 +98,5 @@ public class Doctor extends User implements Serializable {
 
     public Doctor(String firstname, String lastname, String username, boolean enabled) {
         super(firstname, lastname, username, enabled);
-    }
-
-    public Doctor(long id, String firstname, String lastname, String username, String password, boolean enabled) {
-        super(id, firstname, lastname, username, password, enabled);
     }
 }

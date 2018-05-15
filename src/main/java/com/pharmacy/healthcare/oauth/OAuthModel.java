@@ -1,7 +1,5 @@
 package com.pharmacy.healthcare.oauth;
 
-import com.pharmacy.healthcare.domain.Doctor;
-
 import java.io.Serializable;
 
 public class OAuthModel implements Serializable {

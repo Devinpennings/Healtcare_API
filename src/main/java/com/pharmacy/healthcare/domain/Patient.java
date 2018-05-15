@@ -25,11 +25,11 @@ public class Patient extends User implements Serializable {
         this.age = age;
     }
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
     public Doctor mappedDoctor;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "doctors_user_id" ,referencedColumnName="user_id")
     public Doctor getDoctor() {
         return mappedDoctor;
