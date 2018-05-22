@@ -3,12 +3,17 @@ package com.pharmacy.healthcare.services;
 import com.pharmacy.healthcare.domain.*;
 import com.pharmacy.healthcare.repository.*;
 import org.apache.commons.text.RandomStringGenerator;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,6 +22,9 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.io.*;
 import java.sql.Date;
 import java.util.Calendar;
@@ -30,7 +38,12 @@ public class PatientService {
     private DiagnosesRepository diagnosisRepository;
 
     @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
     private PatientRepository patientRepository;
+
+    EntityManager em;
 
     @Autowired
     DoctorRepository doctorRepository;
@@ -112,6 +125,15 @@ public class PatientService {
         else{
             return false;
         }
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
+    public void deletePatient(Long user_id){
+        Query query = entityManager.createNativeQuery("{call dbo.sp_deletePatient (?)}");
+        query.setParameter(1, user_id);
+        query.executeUpdate();
 
     }
 

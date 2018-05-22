@@ -29,8 +29,8 @@ public class  TimeSlot implements Serializable {
     @Column(name = "approval", nullable = false)
     private Boolean approval = false;
 
-    @Column(name = "doctorAvailable", nullable = false)
-    private Boolean doctorAvailable = true;
+//    @Column(name = "doctorAvailable", nullable = false)
+//    private Boolean doctorAvailable = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctors_user_id", referencedColumnName = "user_id")
@@ -123,9 +123,9 @@ public class  TimeSlot implements Serializable {
         this.note = note;
     }
 
-    public Boolean getDoctorAvailable() { return this.doctorAvailable; }
-
-    public void setDoctorAvailable(Boolean value) { this.doctorAvailable = value; }
+//    public Boolean getDoctorAvailable() { return this.doctorAvailable; }
+//
+//    public void setDoctorAvailable(Boolean value) { this.doctorAvailable = value; }
 
     public Boolean getApproval() {
         return approval;

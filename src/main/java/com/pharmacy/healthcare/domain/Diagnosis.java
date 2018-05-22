@@ -1,8 +1,12 @@
 package com.pharmacy.healthcare.domain;
 
 import com.pharmacy.healthcare.aes.EncryptionUtil;
+import org.hibernate.annotations.Type;
+import org.hibernate.jpa.criteria.expression.function.AggregationFunction;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.security.GeneralSecurityException;
 import java.util.Date;
@@ -27,6 +31,8 @@ public class Diagnosis implements Serializable {
     private String category;
 
     @Column(name = "report", nullable = false)
+    //@Length(max=10000)
+    @Type(type="text")
     private String report;
 
     @Column(name = "date", nullable = false)

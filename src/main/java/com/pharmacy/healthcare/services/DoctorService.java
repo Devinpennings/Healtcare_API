@@ -100,28 +100,46 @@ public class DoctorService {
             startTime = new Date(Long.parseLong(starttime));
             endTime = new Date(Long.parseLong(endtime));
 
-
             Doctor doctor = doctorRepository.findOne(request_id);
+
+            //TODO temp fix, timeslots worden anders niet goed opgehaald
+            Collection<TimeSlot> list = timeSlotRepository.findAllByDoctorId(doctor.getUser_id());
+            Set<TimeSlot> items = new HashSet<TimeSlot>(list);
+            doctor.addTimeSlotList(items);
             Doctor subtitude = doctorRepository.findOne(subtitude_id);
 
-            for (TimeSlot ts : doctor.getTimeSlots(startTime, endTime)) {
+
+            Set<TimeSlot> slots = doctor.getTimeSlots(startTime, endTime);
+
+            for (TimeSlot ts : slots) {
+
+                System.out.println("Trying to find substitude for timeslot: " + ts.getStartTime() + " - " + ts.getEndTime());
 
                 if (subtitude.isAvailable(ts.getStartTime()) && subtitude.isAvailable(ts.getEndTime())) {
+
+                    System.out.println("Substitude available for above timeslot");
+
                     for (TimeSlot sts : subtitude.getTimeSlots(ts.getStartTime(), ts.getEndTime())) {
+
                         sts.setMappedDoctor(null);
-                        sts.setAvailable(true);
+                        sts.setAvailable(false);
                         timeSlotRepository.save(sts);
                     }
 
+                    if(ts.getMappedPatient() != null){
+                        System.out.println("TIMESLOT ALREADY HAD PATIENT");
+                    }
                     ts.setMappedDoctor(subtitude);
                     ts.setAvailable(false);
                 } else {
-                    ts.setDoctorAvailable(false);
+                    System.out.println("Substitude not available");
+                    ts.setAvailable(false);
                     patientService.sendAppointmentCancelMail(ts.getMappedPatient());
                 }
                 timeSlotRepository.save(ts);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

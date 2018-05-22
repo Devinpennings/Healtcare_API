@@ -1,6 +1,7 @@
 package com.pharmacy.healthcare;
 
 import com.pharmacy.healthcare.domain.Doctor;
+import com.pharmacy.healthcare.domain.Role;
 import com.pharmacy.healthcare.domain.TimeSlot;
 import com.pharmacy.healthcare.domain.User;
 import com.pharmacy.healthcare.repository.DoctorRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,6 +1,7 @@
 package com.pharmacy.healthcare.oauth;
 
 
+import com.pharmacy.healthcare.InitialDataLoader;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -11,9 +12,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().access("#oauth2.hasScope('read')");
+        //todo hier kan de security geconfigureerd worden
+        http.authorizeRequests().anyRequest().access("#oauth2.hasScope('read') and hasRole('ROLE_ADMIN')");
 
 
     }

@@ -1,11 +1,10 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +14,7 @@ import java.util.*;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
 public abstract class User implements UserDetails, Serializable {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,19 +54,38 @@ public abstract class User implements UserDetails, Serializable {
 
     public abstract String getType();
 
-    @JsonIgnore
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        return authorities;
+        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+
+        for(Role role: roles){
+            list.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        }
+        return list;
+
     }
+
+
 
     @JsonIgnore
     @OneToMany(
+            fetch = FetchType.EAGER,
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
     private Set<UserToken> tokens = new HashSet<>();
+
+    @ManyToMany(
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     @Override
     @JsonIgnore
@@ -139,7 +158,13 @@ public abstract class User implements UserDetails, Serializable {
         this.city = city;
     }
 
-
+//    public void setRoles(Collection<Role> roles) {
+//        this.roles = roles;
+//    }
+//
+//    public Collection<Role> getRoles() {
+//        return roles;
+//    }
 
     @JsonIgnore
     @Override
@@ -210,5 +235,11 @@ public abstract class User implements UserDetails, Serializable {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+    }
+
+    public void setRoles(List<Role> roles) {
+        for (Role role: roles){
+            this.roles.add(role);
+        }
     }
 }

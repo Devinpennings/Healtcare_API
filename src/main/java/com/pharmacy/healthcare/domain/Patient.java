@@ -1,16 +1,31 @@
 package com.pharmacy.healthcare.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("patient")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "Patient.deletePatient",
+                procedureName = "sp_deletePatient",
+                resultClasses = { Patient.class },
+                parameters = {
+                        @StoredProcedureParameter(
+                                name = "ID",
+                                type = Long.class,
+                                mode = ParameterMode.IN) })
+})
 public class Patient extends User implements Serializable {
+
+
 
     public Patient() {
     }
@@ -103,6 +118,8 @@ public class Patient extends User implements Serializable {
     public String getType() {
         return "patient";
     }
+
+
 
     /**
      * Outgoing Mail (SMTP) Server

@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import javax.annotation.PostConstruct;
 import java.sql.Time;
@@ -52,4 +53,6 @@ public class ServletInitializer extends SpringBootServletInitializer {
                 new MappingJackson2HttpMessageConverter(mapper);
         return converter;
     }
+
+
 }

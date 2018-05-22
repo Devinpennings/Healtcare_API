@@ -47,8 +47,6 @@ public class TimeSlotServiceTest {
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         date = c.getTime();
-
-
     }
 
 
@@ -114,7 +112,7 @@ public class TimeSlotServiceTest {
         timeSlots.add(timeSlot3);
         when(timeSlotRepository.findAllByDoctorId(doctor.getUser_id())).thenReturn(timeSlots);
         Collection<TimeSlot> result3 = timeSlotService.getDoctorAppointments(0, doctor.getUser_id());
-        assertNull(result3);
+        assertEquals(1, result3.size());
     }
 
     @Test

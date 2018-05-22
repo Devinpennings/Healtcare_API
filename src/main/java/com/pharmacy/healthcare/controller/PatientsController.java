@@ -12,6 +12,7 @@ import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,18 +95,20 @@ public class PatientsController {
         }
     }
 
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-//    public ResponseEntity<?> deletePatient(@PathVariable("id") long patientId) {
-//
-//        try{
-//            patientRepository.delete(patientId);
-//            return ResponseEntity.noContent().build();
-//        }
-//        catch(ResourceNotFoundException e){
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deletePatient(@PathVariable("id") Long patientId) {
+
+        try{
+            patientService.deletePatient(patientId);
+            return ResponseEntity.noContent().build();
+        }
+        catch(ResourceNotFoundException e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Error, message: " + e.getMessage());
+        }
+
+    }
 
     @RequestMapping(value = "/dossier/{user_id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDossier(@PathVariable long user_id)

@@ -55,6 +55,7 @@ public class Doctor extends User implements Serializable {
 
         for (TimeSlot ts : this.timeSlots) {
             if ((ts.getStartTime().after(startTime) && ts.getStartTime().before(endTime)) ||
+                    (ts.getStartTime().before(startTime) && ts.getEndTime().before(endTime)) ||
                     (ts.getEndTime().after(startTime) && ts.getEndTime().before(endTime)) ||
                     (ts.getEndTime().compareTo(endTime) == 0 && ts.getStartTime().compareTo(startTime) == 0)
                     ) {
